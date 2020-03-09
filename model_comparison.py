@@ -73,11 +73,9 @@ def model_comparison_experiment(X: np.ndarray,
                     )
                 )
             results.append(result)
-    #  todo extend the list of results for multiple random states
     print(df)
     # Remove temporary directory.
     ioutil.teardown_tempdir(path_tmp_results)
-    print(results)
     # Write final results to disk.
     ioutil.write_final_results(path_final_results, results)
     return df

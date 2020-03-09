@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+#
+# comparison_schemes.py
+#
+
+"""
+Features selection and classifications
+"""
+
+__author__ = 'Ahmed Albuni'
+__email__ = 'ahmed.albuni@gmail.com'
+
+
 import numpy as np
 from pandas import DataFrame
 from scipy.stats import randint as sp_randint
@@ -22,9 +35,18 @@ from sklearn.linear_model import LassoCV
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn.datasets as ds
+import argparse
+import pandas as pd
 
 
-def experiment():
+parser = argparse.ArgumentParser(description='Features selection and '
+                                             'classifications (2 classes)')
+parser.add_argument("-file", type=str, help='Features CSV file name and '
+                                            'path, response var y should be '
+                                            'the last field')
+
+
+def experiment(X, y):
     # The number cross-validation folds.
     CV = 5
     # The number of times each experiment is repeated with a different
@@ -56,15 +78,14 @@ def experiment():
     selector_param = []
 
     selector.append((SelectKBest.__name__, SelectKBest(mutual_info_classif)))
-    selector_param.append({'SelectKBest__k': sp_randint(10, 25)})
+    selector_param.append({'SelectKBest__k': sp_randint(2, X.shape[1])})
 
     selector.append((ReliefF.__name__, ReliefF()))
     selector_param.append({'ReliefF__n_neighbors': sp_randint(2, 4),
-                      'ReliefF__n_features_to_select': sp_randint(4, 7)})
+                           'ReliefF__n_features_to_select': sp_randint(4, 7)})
 
     selector.append((VarianceThreshold.__name__, VarianceThreshold()))
-    selector_param.append({'VarianceThreshold__threshold': sp_uniform(0,
-                                                                    0.9)})
+    selector_param.append({'VarianceThreshold__threshold': sp_uniform(0, 0.9)})
 
     selector.append((MultiSURF.__name__, MultiSURF()))
     selector_param.append({'MultiSURF__n_features_to_select': sp_randint(
@@ -73,27 +94,12 @@ def experiment():
     selector.append((SelectFromModel.__name__, SelectFromModel(LassoCV())))
     selector_param.append({})
 
-
-    #index = models.keys()
-    #cols = ['A', 'B', 'C', 'D']
     df = DataFrame(dtype=float)
 
     # X, y = make_classification(n_samples=50, n_features=4, n_classes=2)
     np.random.seed(seed=0)
     random_states = np.random.choice(1000, size=NUM_REPS)
-    # XX = np.genfromtxt('c:/tmp/Abrix.csv', delimiter=',', skip_header=1)
-    X = np.genfromtxt('c:/tmp/d.csv', delimiter=',')
-    # X = np.genfromtxt('c:/tmp/left_t_all2.csv', delimiter=',', skip_header=1)
 
-    print(X.shape)
-
-    y = X[:, 8:9]
-    X = X[:, :8]
-
-    y = y.astype(int)
-    print(X.shape)
-    y = y.reshape(-1)
-    X, y = ds.load_breast_cancer(return_X_y=True)
     # specify parameters and distributions to sample from
     for i in (0, 1, 2, 4):
         models = {
@@ -133,20 +139,10 @@ def experiment():
     plt.show()
 
 
-# code source: https://stackoverflow.com/questions/45713887
-# /add-values-from-two-dictionaries
 def merge_dict(dict1, dict2):
-    merged_dictionary = {}
-    for key in dict1:
-        if key in dict2:
-            new_value = dict1[key] + dict2[key]
-        else:
-            new_value = dict1[key]
-        merged_dictionary[key] = new_value
-    for key in dict2:
-        if key not in merged_dictionary:
-            merged_dictionary[key] = dict2[key]
-    return merged_dictionary
+    merged = dict1.copy()
+    merged.update(dict2)
+    return merged
 
 
 def balanced_roc_auc(y_true, y_pred):
@@ -158,4 +154,11 @@ if __name__ == '__main__':
     logging.disable(logging.CRITICAL)
     warnings.filterwarnings("ignore")
 
-    experiment()
+    args = parser.parse_args()
+    X_y = pd.read_csv(args.file)
+
+    X = X_y.iloc[:, :X_y.shape[1]-1].values
+    y = X_y.iloc[:, X_y.shape[1]-1:].values
+    y = y.reshape(-1)
+    #  X, y = ds.load_breast_cancer(return_X_y=True)
+    experiment(X, y)
