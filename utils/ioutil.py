@@ -7,14 +7,13 @@
 Results handling utility functions for model comparison experiments.
 """
 
-import os
 import csv
+import os
 import shutil
-
 from collections import OrderedDict
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
 def load_target_to_ndarray(path_to_file, index_col=0, classification=True):

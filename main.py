@@ -11,33 +11,30 @@ __author__ = 'Ahmed Albuni'
 __email__ = 'ahmed.albuni@gmail.com'
 
 
+import argparse
+import logging
+import time
+import warnings
+
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import sklearn.datasets as ds
+from lightgbm.sklearn import LGBMClassifier
 from pandas import DataFrame
 from scipy.stats import randint as sp_randint
 from scipy.stats import uniform as sp_uniform
-from sklearn.feature_selection import mutual_info_classif
-from sklearn.linear_model import RidgeClassifier
-from sklearn.svm import SVC
-from lightgbm.sklearn import LGBMClassifier
+from sklearn.feature_selection import (SelectFromModel, SelectKBest,
+                                       VarianceThreshold, mutual_info_classif)
+from sklearn.linear_model import LassoCV, RidgeClassifier
 from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
-from skrebate import ReliefF
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import SelectKBest
-import time
-import logging
-import warnings
-from model_comparison import model_comparison_experiment
-from sklearn.feature_selection import VarianceThreshold
-from skrebate import MultiSURF
-from sklearn.feature_selection import SelectFromModel
-from sklearn.linear_model import LassoCV
-import seaborn as sns
-import matplotlib.pyplot as plt
-import sklearn.datasets as ds
-import argparse
-import pandas as pd
+from sklearn.svm import SVC
+from skrebate import MultiSURF, ReliefF
 
+from model_comparison import model_comparison_experiment
 
 parser = argparse.ArgumentParser(description='Features selection and '
                                              'classifications (2 classes)')

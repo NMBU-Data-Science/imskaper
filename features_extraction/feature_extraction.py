@@ -13,6 +13,7 @@ __email__ = 'ahmed.albuni@gmail.com'
 
 import argparse
 import logging
+from csv import DictWriter
 from os import listdir
 from os.path import isfile, join
 
@@ -23,7 +24,6 @@ import six
 from radiomics import (firstorder, glcm, gldm, glrlm, glszm, ngtdm, shape,
                        shape2D)
 from tqdm import tqdm
-from csv import DictWriter
 
 parser = argparse.ArgumentParser(description='Features extraction')
 parser.add_argument("-file", type=str, help='CSV parameters file name and '

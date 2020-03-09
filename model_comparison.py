@@ -16,10 +16,12 @@ from typing import Callable, Dict, List
 
 import numpy as np
 from joblib import Parallel, delayed
-from tqdm import tqdm
 from pandas import DataFrame
+from tqdm import tqdm
+
 from comparison_schemes import nested_cross_validation
 from utils import ioutil
+
 
 def model_comparison_experiment(X: np.ndarray,
                                 y: np.ndarray,
