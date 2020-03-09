@@ -7,37 +7,38 @@
 Schemes for model comparison experiments.
 """
 
-__author__ = 'Severin Langberg'
-__email__ = 'langberg91@gmail.com'
+__author__ = "Severin Langberg"
+__email__ = "langberg91@gmail.com"
 
 
 import os
 from collections import OrderedDict
 from datetime import datetime
-from typing import Callable, Tuple
+from typing import Callable
 
 import numpy as np
 from pandas import DataFrame
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
 
-# Local imports.
 from utils import ioutil
 
 
-def nested_cross_validation(X: np.ndarray,
-                            y: np.ndarray,
-                            experiment_id: str,
-                            model: str,
-                            hparams: dict,
-                            score_func: Callable,
-                            df: DataFrame,
-                            selector: str,
-                            cv: int = 10,
-                            output_dir = None,
-                            max_evals: int = 100,
-                            verbose: int = 1,
-                            random_state = None,
-                            path_tmp_results: str = None):
+def nested_cross_validation(
+    X: np.ndarray,
+    y: np.ndarray,
+    experiment_id: str,
+    model: str,
+    hparams: dict,
+    score_func: Callable,
+    df: DataFrame,
+    selector: str,
+    cv: int = 10,
+    output_dir=None,
+    max_evals: int = 100,
+    verbose: int = 1,
+    random_state=None,
+    path_tmp_results: str = None,
+):
     """
     Nested cross-validtion model comparison.
 
@@ -61,27 +62,27 @@ def nested_cross_validation(X: np.ndarray,
 
     # Name of file with preliminary results.
     if path_tmp_results is None:
-        path_case_file = ''
+        path_case_file = ""
     else:
         path_case_file = os.path.join(
-            path_tmp_results, f'experiment_{random_state}_{experiment_id}'
+            path_tmp_results, f"experiment_{random_state}_{experiment_id}"
         )
 
     # Check if prelimnary results aleady exists. If so, load results and
     # proceed to next experiment.
     if os.path.isfile(path_case_file):
         output = ioutil.read_prelim_result(path_case_file)
-        print(f'Reloading results from: {path_case_file}')
+        print(f"Reloading results from: {path_case_file}")
 
     # Run a new cross-validation experiment.
     else:
         # Theoutput written to file.
-        output = {'random_state': random_state, 'model_name': experiment_id}
+        output = {"random_state": random_state, "model_name": experiment_id}
 
         # Time the execution.
         if verbose > 0:
             start_time = datetime.now()
-            print(f'Running experiment {random_state} with {experiment_id}')
+            print(f"Running experiment {random_state} with {experiment_id}")
 
         # Set random state for the model.
         model.random_state = random_state
@@ -101,9 +102,9 @@ def nested_cross_validation(X: np.ndarray,
                 estimator=model,
                 param_distributions=hparams,
                 n_iter=max_evals,
-                scoring='roc_auc',
+                scoring="roc_auc",
                 cv=cv,
-                random_state=random_state
+                random_state=random_state,
             )
             optimizer.fit(X_train, y_train)
 
@@ -111,7 +112,27 @@ def nested_cross_validation(X: np.ndarray,
             output.update(**optimizer.best_params_)
             best_model = optimizer.best_estimator_
             best_model.fit(X_train, y_train)
+            features = best_model.named_steps[selector]
+            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            if selector == "SelectKBest":
+                print(features.get_support())
+            elif selector == "ReliefF":
+                print(features.top_features_)
+                print(features.n_features_to_select)
+                print(features.feature_importances_)
+            elif selector == "VarianceThreshold":
+                print(features._get_param_names())
+                print(features._get_support_mask())
+            elif selector == "MultiSURF":
+                print("MultipSurf")
+                print(features.n_features_to_select)
+                print(features.feature_importances_)
+                print(features.top_features_)
+            elif selector == "SelectFromModel":
+                print(features._get_support_mask())
 
+            print(selector)
+            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             # Record training and validation performance of the selected model.
             test_scores.append(
                 score_func(y_test, np.squeeze(best_model.predict(X_test)))
@@ -123,10 +144,10 @@ def nested_cross_validation(X: np.ndarray,
         output.update(
             OrderedDict(
                 [
-                    ('test_score', np.mean(test_scores)),
-                    ('train_score', np.mean(train_scores)),
-                    ('test_score_variance', np.var(test_scores)),
-                    ('train_score_variance', np.var(train_scores)),
+                    ("test_score", np.mean(test_scores)),
+                    ("train_score", np.mean(train_scores)),
+                    ("test_score_variance", np.var(test_scores)),
+                    ("train_score_variance", np.var(train_scores)),
                 ]
             )
         )
@@ -136,6 +157,6 @@ def nested_cross_validation(X: np.ndarray,
 
             if verbose > 0:
                 duration = datetime.now() - start_time
-                print(f'Experiment {random_state} completed in {duration}')
-                output['exp_duration'] = duration
+                print(f"Experiment {random_state} completed in {duration}")
+                output["exp_duration"] = duration
     return output, df

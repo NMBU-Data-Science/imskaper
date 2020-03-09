@@ -80,9 +80,9 @@ def read_prelim_result(path_to_file):
 def write_prelim_results(path_to_file, results):
     """Store results in temporary separate files to prevent write conflicts."""
 
-    with open(path_to_file, 'w') as outfile:
+    with open(path_to_file, "w") as outfile:
         writer = csv.DictWriter(
-            outfile, fieldnames=list(results.keys()), lineterminator='\n'
+            outfile, fieldnames=list(results.keys()), lineterminator="\n"
         )
         writer.writeheader()
         writer.writerow(results)

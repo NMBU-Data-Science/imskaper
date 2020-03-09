@@ -1,0 +1,46 @@
+{"config":
+        {
+          "features_file": "c:\\tmp\\d.csv",
+          "output_dir": "c:\\tmp\\",
+          "CV": 5,
+          "NUM_REPS": 2,
+          "MAX_EVALS": 2,
+          "classifications":
+          {
+          "Ridge": {
+            "alpha_from": 1,
+            "alpha_to": 5
+          },
+          "LGBM": {
+            "max_depth": 20,
+            "lambda_l1_from": 1,
+            "lambda_l1_to": 6
+          },
+          "CVS": {
+            "C_from": 1,
+            "C_to": 5
+          }
+        },
+          "selectors":
+            {
+              "SelectKBest": {
+                "K_from": 2,
+                "K_to": 7
+            },
+              "ReliefF": {
+                "n_neighbors_from": 1,
+                "n_neighbors_to": 3,
+                "n_features_to_select_from": 2,
+                "n_features_to_select_to": 7
+            },
+              "VarianceThreshold": {
+                "threshold_from": 0.0,
+                "threshold_to": 0.9
+              },
+              "MultiSURF": {
+                "n_features_to_select_from": 2,
+                "n_features_to_select_to": 7
+              }
+        }
+    }
+}
