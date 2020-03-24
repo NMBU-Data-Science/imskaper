@@ -32,6 +32,7 @@ from radiomics import (
     shape2D,
 )
 from tqdm import tqdm
+import scipy.io
 
 parser = argparse.ArgumentParser(description="Features extraction")
 parser.add_argument(
@@ -115,7 +116,9 @@ def extract_radiomics_features(
         enumerate(list_of_images), total=len(list_of_images), unit="files"
     ):
         image_name = images_path + img
-        image = sitk.ReadImage(image_name, sitk.sitkUInt8)
+        #image = sitk.ReadImage(image_name, sitk.sitkUInt8)
+        image = scipy.io.loadmat(image_name)
+        image = sitk.GetImageFromArray(image['PET'].astype(float))
 
         row = dict()
         row["Name"] = img
@@ -128,31 +131,35 @@ def extract_radiomics_features(
 
         else:
             mask_name = masks_path + img
-            mask = sitk.ReadImage(mask_name, sitk.sitkUInt8)
+            mask_name = mask_name.replace('PET', 'mask')
+            #mask = sitk.ReadImage(mask_name, sitk.sitkUInt8)
+            mask = scipy.io.loadmat(mask_name)
+
+            mask = sitk.GetImageFromArray(mask['mask'].astype(float))
             # Shape features applied only when the mask is provided
             if "shape" in features_list:
                 if len((sitk.GetArrayFromImage(image)).shape) == 2:
                     shape_2d_f = shape2D.RadiomicsShape2D(
                         image, mask, binWidth=bin_width
                     )
-                    row.update(get_selected_features(shape_2d_f, "shape_2d"))
+                    row.update(get_selected_features(shape_2d_f))
                 else:
                     shape_f = shape.RadiomicsShape(
                         image, mask, binWidth=bin_width
                     )
-                    row.update(get_selected_features(shape_f, "shape"))
+                    row.update(get_selected_features(shape_f))
 
         if "first_order" in features_list:
             f_o_f = firstorder.RadiomicsFirstOrder(
                 image, mask, binWidth=bin_width
             )
-            row.update(get_selected_features(f_o_f, "first_order"))
+            row.update(get_selected_features(f_o_f))
         if "glszm" in features_list:
             glszm_f = glszm.RadiomicsGLSZM(image, mask, binWidth=bin_width)
-            row.update(get_selected_features(glszm_f, "glszm"))
+            row.update(get_selected_features(glszm_f))
         if "glrlm" in features_list:
             glrlm_f = glrlm.RadiomicsGLRLM(image, mask, binWidth=bin_width)
-            row.update(get_selected_features(glrlm_f, "glrlm"))
+            row.update(get_selected_features(glrlm_f))
         if "ngtdm" in features_list:
             for d in ngtdm_distance:
                 ngtdm_f = ngtdm.RadiomicsNGTDM(
@@ -160,7 +167,7 @@ def extract_radiomics_features(
                 )
                 row.update(
                     get_selected_features(
-                        ngtdm_f, "ngtdm", additional_param="_d_" + str(d)
+                        ngtdm_f, additional_param="_d_" + str(d)
                     )
                 )
         if "gldm" in features_list:
@@ -174,7 +181,7 @@ def extract_radiomics_features(
                 )
                 row.update(
                     get_selected_features(
-                        gldm_f, "gldm", additional_param="_d_" + str(d)
+                        gldm_f, additional_param="_d_" + str(d)
                     )
                 )
         if "glcm" in features_list:
@@ -184,7 +191,7 @@ def extract_radiomics_features(
                 )
                 row.update(
                     get_selected_features(
-                        glcm_f, "glcm", additional_param="_d_" + str(d)
+                        glcm_f, additional_param="_d_" + str(d)
                     )
                 )
         if i == 0:
@@ -204,11 +211,10 @@ def add_row_of_data(file_name, columns, row):
         writer.writerow(row)
 
 
-def get_selected_features(selected_feature, category, additional_param=None):
+def get_selected_features(selected_feature, additional_param=None):
     selected_feature.execute()
     data = {}
     for (key, val) in six.iteritems(selected_feature.featureValues):
-        key = category + "_" + key
         if additional_param is not None:
             key = key + additional_param
         data[key] = val

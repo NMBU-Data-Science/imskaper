@@ -22,7 +22,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import sklearn.datasets as ds
 from lightgbm.sklearn import LGBMClassifier
 from pandas import DataFrame
 from scipy.stats import randint as sp_randint
@@ -64,8 +63,9 @@ def experiment(config):
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # Read from the CSV file that contains the features and the response.
     X_y = pd.read_csv(config["config"]["features_file"])
+
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
-    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
+    y = X_y.iloc[:, X_y.shape[1] - 1:].values
     y = y.reshape(-1)
     #  X, y = ds.load_breast_cancer(return_X_y=True)
 
@@ -83,7 +83,6 @@ def experiment(config):
     lgbm_param["LGBMClassifier__lambda_l1"] = sp_randint(1, 3)
     svc_param["SVC__C"] = sp_randint(2, 4)
 
-    i = 1  # 3 takes forever!!
     selector = []
     selector_param = []
 
@@ -116,7 +115,7 @@ def experiment(config):
     random_states = np.random.choice(1000, size=NUM_REPS)
 
     # specify parameters and distributions to sample from
-    for i in (4,):
+    for i in (0, 1, 2):
         path_to_results = Path(
             config["config"]["output_dir"],
             "results_" + selector[i][0] + str(time.strftime("%Y%m%d-%H%M%S")),

@@ -1,5 +1,12 @@
-numpy==1.16.1
-scipy==1.2.1
-pandas==0.24.1
-joblib==0.13.2
-scikit-learn==0.20.3
+lightgbm
+seaborn
+matplotlib
+tqdm
+six
+SimpleITK
+radiomics
+numpy
+scipy
+pandas
+joblib
+scikit-learn

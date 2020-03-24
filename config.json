@@ -1,10 +1,10 @@
 {"config":
         {
-          "features_file": "c:\\tmp\\d.csv",
+          "features_file": "c:\\tmp\\hn_ct_c.csv",
           "output_dir": "c:\\tmp\\",
           "CV": 5,
-          "NUM_REPS": 2,
-          "MAX_EVALS": 2,
+          "NUM_REPS": 1,
+          "MAX_EVALS": 10,
           "classifications":
           {
           "Ridge": {
@@ -24,22 +24,22 @@
           "selectors":
             {
               "SelectKBest": {
-                "K_from": 2,
-                "K_to": 7
+                "K_from": 25,
+                "K_to": 45
             },
               "ReliefF": {
                 "n_neighbors_from": 1,
                 "n_neighbors_to": 3,
-                "n_features_to_select_from": 2,
-                "n_features_to_select_to": 7
+                "n_features_to_select_from": 25,
+                "n_features_to_select_to": 45
             },
               "VarianceThreshold": {
                 "threshold_from": 0.0,
                 "threshold_to": 0.9
               },
               "MultiSURF": {
-                "n_features_to_select_from": 2,
-                "n_features_to_select_to": 7
+                "n_features_to_select_from": 25,
+                "n_features_to_select_to": 45
               }
         }
     }

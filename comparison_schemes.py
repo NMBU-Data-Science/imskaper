@@ -113,26 +113,26 @@ def nested_cross_validation(
             best_model = optimizer.best_estimator_
             best_model.fit(X_train, y_train)
             features = best_model.named_steps[selector]
-            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             if selector == "SelectKBest":
-                print(features.get_support())
+                pass#print(features.get_support())
             elif selector == "ReliefF":
-                print(features.top_features_)
-                print(features.n_features_to_select)
-                print(features.feature_importances_)
+                pass#print(features.top_features_)
+                #print(features.n_features_to_select)
+                #print(features.feature_importances_)
             elif selector == "VarianceThreshold":
-                print(features._get_param_names())
-                print(features._get_support_mask())
+                pass#print(features._get_param_names())
+                #print(features._get_support_mask())
             elif selector == "MultiSURF":
-                print("MultipSurf")
-                print(features.n_features_to_select)
-                print(features.feature_importances_)
-                print(features.top_features_)
+                pass#print("MultipSurf")
+                #print(features.n_features_to_select)
+                #print(features.feature_importances_)
+                #print(features.top_features_)
             elif selector == "SelectFromModel":
-                print(features._get_support_mask())
+                pass #print(features._get_support_mask())
 
-            print(selector)
-            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            #print(selector)
+            #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
             # Record training and validation performance of the selected model.
             test_scores.append(
                 score_func(y_test, np.squeeze(best_model.predict(X_test)))
