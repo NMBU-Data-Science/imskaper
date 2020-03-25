@@ -1,10 +1,12 @@
+skrebate
+radiomics
 lightgbm
 seaborn
 matplotlib
 tqdm
 six
 SimpleITK
-radiomics
+pyradiomics
 numpy
 scipy
 pandas
