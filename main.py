@@ -38,9 +38,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from skrebate import MultiSURF, ReliefF
-from skfeature.function.similarity_based.fisher_score import fisher_score
-from features_selection.feature_selectors import FisherScoreSelection
-from sklearn.feature_selection import chi2
 
 from model_comparison import model_comparison_experiment
 
@@ -164,11 +161,6 @@ def experiment(config):
 
     selector.append((SelectFromModel.__name__, SelectFromModel(LassoCV())))
     selector_param.append({})
-
-    selector.append((FisherScoreSelection.__name__, FisherScoreSelection()))
-    selector_param.append(
-        {"FisherScoreSelection__num_features": sp_randint(5, X.shape[1] - 1)}
-    )
 
     df = DataFrame(dtype="float")
 
