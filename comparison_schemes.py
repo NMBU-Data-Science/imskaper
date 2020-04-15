@@ -89,7 +89,7 @@ def nested_cross_validation(
 
         # Record model training and validation performance.
         test_scores, train_scores = [], []
-
+        selected_features = ""
         # Run outer K-folds.
         kfolds = StratifiedKFold(cv, shuffle=True, random_state=random_state)
         for (train_idx, test_idx) in kfolds.split(X, y):
@@ -113,26 +113,28 @@ def nested_cross_validation(
             best_model = optimizer.best_estimator_
             best_model.fit(X_train, y_train)
             features = best_model.named_steps[selector]
-            #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-            if selector == "SelectKBest":
-                pass#print(features.get_support())
-            elif selector == "ReliefF":
-                pass#print(features.top_features_)
-                #print(features.n_features_to_select)
-                #print(features.feature_importances_)
-            elif selector == "VarianceThreshold":
-                pass#print(features._get_param_names())
-                #print(features._get_support_mask())
-            elif selector == "MultiSURF":
-                pass#print("MultipSurf")
-                #print(features.n_features_to_select)
-                #print(features.feature_importances_)
-                #print(features.top_features_)
-            elif selector == "SelectFromModel":
-                pass #print(features._get_support_mask())
 
-            #print(selector)
-            #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            if selector == "SelectKBest":
+                selected_features += str(features.get_support())
+
+            elif selector == "ReliefF":
+                selected_features += str(features.top_features_)
+                selected_features += str(features.n_features_to_select)
+                selected_features += str(features.feature_importances_)
+
+            elif selector == "VarianceThreshold":
+                selected_features += str(features._get_param_names())
+                selected_features += str(features._get_support_mask())
+
+            elif selector == "MultiSURF":
+                selected_features += str(features.n_features_to_select)
+                selected_features += str(features.feature_importances_)
+                selected_features += str(features.top_features_)
+
+            elif selector == "SelectFromModel":
+                pass
+
+            # print(selected_features)
             # Record training and validation performance of the selected model.
             test_scores.append(
                 score_func(y_test, np.squeeze(best_model.predict(X_test)))
@@ -144,10 +146,20 @@ def nested_cross_validation(
         output.update(
             OrderedDict(
                 [
-                    ("test_score", np.mean(test_scores)),
-                    ("train_score", np.mean(train_scores)),
-                    ("test_score_variance", np.var(test_scores)),
-                    ("train_score_variance", np.var(train_scores)),
+                    ("test_score", "{:.5f}".format(np.mean(test_scores))),
+                    ("train_score", "{:.5f}".format(np.mean(train_scores))),
+                    (
+                        "test_score_variance",
+                        "{:.5f}".format(np.var(test_scores)),
+                    ),
+                    (
+                        "train_score_variance",
+                        "{:.5f}".format(np.var(train_scores)),
+                    ),
+                    (
+                        "selected features ",
+                        selected_features.replace("\n", ""),
+                    ),
                 ]
             )
         )
@@ -157,6 +169,12 @@ def nested_cross_validation(
 
             if verbose > 0:
                 duration = datetime.now() - start_time
+                days = duration.days
+                hours, rem = divmod(duration.seconds, 3600)
+                minutes, seconds = divmod(rem, 60)
+
                 print(f"Experiment {random_state} completed in {duration}")
-                output["exp_duration"] = duration
+                output["exp_duration"] = "{} days {:02d}:{:02d}:{:02d}".format(
+                    days, hours, minutes, seconds
+                )
     return output, df

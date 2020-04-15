@@ -38,6 +38,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from skrebate import MultiSURF, ReliefF
+from skfeature.function.similarity_based.fisher_score import fisher_score
+from features_selection.feature_selectors import FisherScoreSelection
+from sklearn.feature_selection import chi2
 
 from model_comparison import model_comparison_experiment
 
@@ -65,9 +68,10 @@ def experiment(config):
     X_y = pd.read_csv(config["config"]["features_file"])
 
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
-    y = X_y.iloc[:, X_y.shape[1] - 1:].values
+    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
-    #  X, y = ds.load_breast_cancer(return_X_y=True)
+    # import sklearn.datasets as ds
+    # X, y = ds.load_breast_cancer(return_X_y=True)
 
     # Define a series of models (example includes only one) wrapped in a
     # Pipeline.
@@ -78,37 +82,95 @@ def experiment(config):
     ridge_param = dict()
     lgbm_param = dict()
     svc_param = dict()
-    ridge_param["RidgeClassifier__alpha"] = sp_randint(1, 11)
-    lgbm_param["LGBMClassifier__max_depth"] = sp_randint(20, 40)
-    lgbm_param["LGBMClassifier__lambda_l1"] = sp_randint(1, 3)
-    svc_param["SVC__C"] = sp_randint(2, 4)
+
+    ridge_param["RidgeClassifier__alpha"] = sp_randint(
+        config["config"]["classifications"]["Ridge"]["alpha_from"],
+        config["config"]["classifications"]["Ridge"]["alpha_to"],
+    )
+    # ridge_param["RidgeClassifier__tol"] = (0.01, 0.001, 0.0001)
+    lgbm_param["LGBMClassifier__max_depth"] = sp_randint(
+        config["config"]["classifications"]["LGBM"]["max_depth_from"],
+        config["config"]["classifications"]["LGBM"]["max_depth_to"],
+    )
+    # lgbm_param["LGBMClassifier__min_data_in_leaf"] = (5, 7, 10)
+    lgbm_param["LGBMClassifier__num_leaves"] = sp_randint(
+        config["config"]["classifications"]["LGBM"]["num_leaves_from"],
+        config["config"]["classifications"]["LGBM"]["num_leaves_to"],
+    )
+    # lgbm_param["LGBMClassifier__lambda_l1"] = sp_randint(1, 3)
+    svc_param["SVC__C"] = sp_randint(
+        config["config"]["classifications"]["CVS"]["C_from"],
+        config["config"]["classifications"]["CVS"]["C_to"],
+    )
 
     selector = []
     selector_param = []
 
     selector.append((SelectKBest.__name__, SelectKBest(mutual_info_classif)))
-    selector_param.append({"SelectKBest__k": sp_randint(2, X.shape[1])})
+    selector_param.append(
+        {
+            "SelectKBest__k": sp_randint(
+                config["config"]["selectors"]["SelectKBest"]["K_from"],
+                config["config"]["selectors"]["SelectKBest"]["K_to"],
+            )
+        }
+    )
 
     selector.append((ReliefF.__name__, ReliefF()))
     selector_param.append(
         {
-            "ReliefF__n_neighbors": sp_randint(2, 4),
-            "ReliefF__n_features_to_select": sp_randint(4, 7),
+            "ReliefF__n_neighbors": sp_randint(
+                config["config"]["selectors"]["ReliefF"]["n_neighbors_from"],
+                config["config"]["selectors"]["ReliefF"]["n_neighbors_to"],
+            ),
+            "ReliefF__n_features_to_select": sp_randint(
+                config["config"]["selectors"]["ReliefF"][
+                    "n_features_to_select_from"
+                ],
+                config["config"]["selectors"]["ReliefF"][
+                    "n_features_to_select_to"
+                ],
+            ),
         }
     )
 
     selector.append((VarianceThreshold.__name__, VarianceThreshold()))
-    selector_param.append({"VarianceThreshold__threshold": sp_uniform(0, 0.9)})
+    selector_param.append(
+        {
+            "VarianceThreshold__threshold": sp_uniform(
+                config["config"]["selectors"]["VarianceThreshold"][
+                    "threshold_from"
+                ],
+                config["config"]["selectors"]["VarianceThreshold"][
+                    "threshold_to"
+                ],
+            )
+        }
+    )
 
     selector.append((MultiSURF.__name__, MultiSURF()))
     selector_param.append(
-        {"MultiSURF__n_features_to_select": sp_randint(3, 7)}
+        {
+            "MultiSURF__n_features_to_select": sp_randint(
+                config["config"]["selectors"]["MultiSURF"][
+                    "n_features_to_select_from"
+                ],
+                config["config"]["selectors"]["MultiSURF"][
+                    "n_features_to_select_to"
+                ],
+            )
+        }
     )
 
     selector.append((SelectFromModel.__name__, SelectFromModel(LassoCV())))
     selector_param.append({})
 
-    df = DataFrame(dtype=float)
+    selector.append((FisherScoreSelection.__name__, FisherScoreSelection()))
+    selector_param.append(
+        {"FisherScoreSelection__num_features": sp_randint(5, X.shape[1] - 1)}
+    )
+
+    df = DataFrame(dtype="float")
 
     # X, y = make_classification(n_samples=50, n_features=4, n_classes=2)
     np.random.seed(seed=0)

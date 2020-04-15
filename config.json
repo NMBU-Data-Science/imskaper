@@ -12,9 +12,10 @@
             "alpha_to": 5
           },
           "LGBM": {
-            "max_depth": 20,
-            "lambda_l1_from": 1,
-            "lambda_l1_to": 6
+            "max_depth_from": 20,
+            "max_depth_to": 50,
+            "num_leaves_from": 20,
+            "num_leaves_to": 80
           },
           "CVS": {
             "C_from": 1,

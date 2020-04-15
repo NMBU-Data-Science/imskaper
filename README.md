@@ -61,7 +61,9 @@ To modify a json file you can use any text editor, you can do that by right clic
 
 In the json file you will need to modify the path of the dataset file as follow:
 
-&quot;features\_file&quot;: &quot;c:\\tmp\\hn\_ct\_c.csv&quot;, remember to use the escape character &quot;\&quot; in the path, which means you should replace all single backslash characters with double backslashes, and do not forget the file extension &quot;.csv&quot;
+&quot;features\_file&quot;: &quot;c:\\\tmp\\\hn\_ct\_c.csv&quot;, remember to
+ use the escape character \"\\\" in the path, which means you should replace
+  all single backslash characters with double backslashes, and do not forget the file extension &quot;.csv&quot;
 
 Also, you will need to update the output directory, where the results are stored.
 
