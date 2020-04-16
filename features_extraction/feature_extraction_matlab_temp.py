@@ -116,9 +116,9 @@ def extract_radiomics_features(
         enumerate(list_of_images), total=len(list_of_images), unit="files"
     ):
         image_name = images_path + img
-        #image = sitk.ReadImage(image_name, sitk.sitkUInt8)
+        # image = sitk.ReadImage(image_name, sitk.sitkUInt8)
         image = scipy.io.loadmat(image_name)
-        image = sitk.GetImageFromArray(image['PET'].astype(float))
+        image = sitk.GetImageFromArray(image["PET"].astype(float))
 
         row = dict()
         row["Name"] = img
@@ -131,11 +131,11 @@ def extract_radiomics_features(
 
         else:
             mask_name = masks_path + img
-            mask_name = mask_name.replace('PET', 'mask')
-            #mask = sitk.ReadImage(mask_name, sitk.sitkUInt8)
+            mask_name = mask_name.replace("PET", "mask")
+            # mask = sitk.ReadImage(mask_name, sitk.sitkUInt8)
             mask = scipy.io.loadmat(mask_name)
 
-            mask = sitk.GetImageFromArray(mask['mask'].astype(float))
+            mask = sitk.GetImageFromArray(mask["mask"].astype(float))
             # Shape features applied only when the mask is provided
             if "shape" in features_list:
                 if len((sitk.GetArrayFromImage(image)).shape) == 2:

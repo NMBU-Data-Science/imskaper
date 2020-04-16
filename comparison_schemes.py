@@ -112,8 +112,10 @@ def nested_cross_validation(
             output.update(**optimizer.best_params_)
             best_model = optimizer.best_estimator_
             best_model.fit(X_train, y_train)
-            features = best_model.named_steps[selector]
-
+            if selector != "No_feature_selection":
+                features = best_model.named_steps[selector]
+            else:
+                features = None
             if selector == "SelectKBest":
                 selected_features += str(features.get_support())
 

@@ -4,7 +4,7 @@
           "output_dir": "c:\\tmp\\",
           "CV": 5,
           "NUM_REPS": 1,
-          "MAX_EVALS": 10,
+          "MAX_EVALS": 20,
           "classifications":
           {
           "Ridge": {
@@ -12,10 +12,10 @@
             "alpha_to": 5
           },
           "LGBM": {
-            "max_depth_from": 20,
+            "max_depth_from": 5,
             "max_depth_to": 50,
-            "num_leaves_from": 20,
-            "num_leaves_to": 80
+            "num_leaves_from": 3,
+            "num_leaves_to": 20
           },
           "CVS": {
             "C_from": 1,
@@ -25,14 +25,14 @@
           "selectors":
             {
               "SelectKBest": {
-                "K_from": 25,
-                "K_to": 45
+                "K_from": 10,
+                "K_to": 30
             },
               "ReliefF": {
                 "n_neighbors_from": 1,
                 "n_neighbors_to": 3,
-                "n_features_to_select_from": 25,
-                "n_features_to_select_to": 45
+                "n_features_to_select_from": 10,
+                "n_features_to_select_to": 30
             },
               "VarianceThreshold": {
                 "threshold_from": 0.0,

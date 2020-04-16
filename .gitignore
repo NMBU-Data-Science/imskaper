@@ -110,3 +110,5 @@ venv.bak/
 tmp_comparison/
 
 *.jpg
+
+features_extraction/test.py

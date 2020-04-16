@@ -31,10 +31,14 @@ from sklearn.feature_selection import (
     SelectKBest,
     VarianceThreshold,
     mutual_info_classif,
+    RFECV,
+    GenericUnivariateSelect,
+    chi2,
 )
-from sklearn.linear_model import LassoCV, RidgeClassifier
+from sklearn.linear_model import LassoCV, RidgeClassifier, LogisticRegression
 from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from skrebate import MultiSURF, ReliefF
@@ -65,7 +69,7 @@ def experiment(config):
     X_y = pd.read_csv(config["config"]["features_file"])
 
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
-    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
+    y = X_y.iloc[:, X_y.shape[1] - 1:].values
     y = y.reshape(-1)
     # import sklearn.datasets as ds
     # X, y = ds.load_breast_cancer(return_X_y=True)
@@ -76,9 +80,13 @@ def experiment(config):
     ridge_classifier = (RidgeClassifier.__name__, RidgeClassifier())
     lgbm_classifier = (LGBMClassifier.__name__, LGBMClassifier())
     cvs_classifier = (SVC.__name__, SVC())
+    dt_classifier = (DecisionTreeClassifier.__name__, DecisionTreeClassifier())
+    lr_classifier = (LogisticRegression.__name__, LogisticRegression())
     ridge_param = dict()
     lgbm_param = dict()
     svc_param = dict()
+    dt_param = dict()
+    lr_param = dict()
 
     ridge_param["RidgeClassifier__alpha"] = sp_randint(
         config["config"]["classifications"]["Ridge"]["alpha_from"],
@@ -89,7 +97,12 @@ def experiment(config):
         config["config"]["classifications"]["LGBM"]["max_depth_from"],
         config["config"]["classifications"]["LGBM"]["max_depth_to"],
     )
-    # lgbm_param["LGBMClassifier__min_data_in_leaf"] = (5, 7, 10)
+    # lgbm_param["LGBMClassifier__reg_alpha"] = (10, 1, 0.1, 0.01, 0.001,
+    # 0.0001)
+    # lgbm_param["LGBMClassifier__reg_lambda"] = (10, 1, 0.1, 0.01, 0.001,
+    # 0.0001)
+    lgbm_param["LGBMClassifier__min_child_samples"] = sp_randint(2, 5)
+    # lgbm_param["LGBMClassifier__min_data_in_bin"] = sp_randint(5, 7)
     lgbm_param["LGBMClassifier__num_leaves"] = sp_randint(
         config["config"]["classifications"]["LGBM"]["num_leaves_from"],
         config["config"]["classifications"]["LGBM"]["num_leaves_to"],
@@ -100,6 +113,8 @@ def experiment(config):
         config["config"]["classifications"]["CVS"]["C_to"],
     )
 
+    # dt_param["DecisionTreeClassifier__ccp_alpha"] = sp_randint(1, 2)
+    lr_param["LogisticRegression__C"] = sp_randint(1, 2)
     selector = []
     selector_param = []
 
@@ -145,6 +160,7 @@ def experiment(config):
         }
     )
 
+    # very slow
     selector.append((MultiSURF.__name__, MultiSURF()))
     selector_param.append(
         {
@@ -162,6 +178,27 @@ def experiment(config):
     selector.append((SelectFromModel.__name__, SelectFromModel(LassoCV())))
     selector_param.append({})
 
+    # very slow for large number of features
+    from sklearn.svm import SVR
+    selector.append((RFECV.__name__, RFECV(SVR(kernel="linear"))))
+    selector_param.append({})
+
+    selector.append((mutual_info_classif.__name__,
+                     GenericUnivariateSelect(mutual_info_classif, 'k_best')))
+    selector_param.append(
+        {
+            "mutual_info_classif__param": sp_randint(15, 35)
+        }
+    )
+    from skfeature.function.similarity_based.fisher_score import fisher_score
+    selector.append((fisher_score.__name__,
+                     GenericUnivariateSelect(fisher_score, 'k_best')))
+    selector_param.append(
+        {
+            "fisher_score__param": sp_randint(10, 20)
+        }
+    )
+
     df = DataFrame(dtype="float")
 
     # X, y = make_classification(n_samples=50, n_features=4, n_classes=2)
@@ -169,7 +206,7 @@ def experiment(config):
     random_states = np.random.choice(1000, size=NUM_REPS)
 
     # specify parameters and distributions to sample from
-    for i in (0, 1, 2):
+    for i in (0, 1, 2, 6, 7):
         path_to_results = Path(
             config["config"]["output_dir"],
             "results_" + selector[i][0] + str(time.strftime("%Y%m%d-%H%M%S")),
@@ -178,11 +215,15 @@ def experiment(config):
             "ridge": Pipeline([scalar, selector[i], ridge_classifier]),
             "lgbm": Pipeline([scalar, selector[i], lgbm_classifier]),
             "svc": Pipeline([scalar, selector[i], cvs_classifier]),
+            "dt": Pipeline([scalar, selector[i], dt_classifier]),
+            "lr": Pipeline([scalar, selector[i], lr_classifier]),
         }
         hparams = {
             "ridge": merge_dict(ridge_param, selector_param[i]),
             "lgbm": merge_dict(lgbm_param, selector_param[i]),
             "svc": merge_dict(svc_param, selector_param[i]),
+            "dt": merge_dict(dt_param, selector_param[i]),
+            "lr": merge_dict(lr_param, selector_param[i]),
         }
 
         df = model_comparison_experiment(
@@ -199,8 +240,42 @@ def experiment(config):
             df=df,
         )
 
+    path_to_results = Path(
+        config["config"]["output_dir"],
+        "results_" + "No_feature_selection" + str(time.strftime(
+            "%Y%m%d-%H%M%S")),
+    ).with_suffix(".csv")
+    models = {
+        "ridge": Pipeline([scalar, ridge_classifier]),
+        "lgbm": Pipeline([scalar, lgbm_classifier]),
+        "svc": Pipeline([scalar, cvs_classifier]),
+        "dt": Pipeline([scalar, dt_classifier]),
+        "lr": Pipeline([scalar, lr_classifier]),
+    }
+    hparams = {
+        "ridge": ridge_param,
+        "lgbm": lgbm_param,
+        "svc": svc_param,
+        "dt": dt_param,
+        "lr": lr_param,
+    }
+
+    df = model_comparison_experiment(
+        models=models,
+        hparams=hparams,
+        path_final_results=path_to_results,
+        random_states=random_states,
+        score_func=roc_auc_score,
+        max_evals=MAX_EVALS,
+        selector="No_feature_selection",
+        cv=CV,
+        X=X,
+        y=y,
+        df=df,
+    )
+
     print(df)
-    sns.heatmap(df, annot=True)
+    sns.heatmap(df.transpose(), annot=True)
     plt.tight_layout()
     plt.savefig("x.jpg")
     plt.show()
