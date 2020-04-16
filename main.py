@@ -101,7 +101,10 @@ def experiment(config):
     # 0.0001)
     # lgbm_param["LGBMClassifier__reg_lambda"] = (10, 1, 0.1, 0.01, 0.001,
     # 0.0001)
-    lgbm_param["LGBMClassifier__min_child_samples"] = sp_randint(2, 5)
+    lgbm_param["LGBMClassifier__min_child_samples"] = sp_randint(
+        config["config"]["classifications"]["LGBM"]["min_child_s_from"],
+        config["config"]["classifications"]["LGBM"]["min_child_s_to"],
+    )
     # lgbm_param["LGBMClassifier__min_data_in_bin"] = sp_randint(5, 7)
     lgbm_param["LGBMClassifier__num_leaves"] = sp_randint(
         config["config"]["classifications"]["LGBM"]["num_leaves_from"],
@@ -114,7 +117,10 @@ def experiment(config):
     )
 
     # dt_param["DecisionTreeClassifier__ccp_alpha"] = sp_randint(1, 2)
-    lr_param["LogisticRegression__C"] = sp_randint(1, 2)
+    lr_param["LogisticRegression__C"] = sp_randint(
+        config["config"]["classifications"]["LR"]["C_from"],
+        config["config"]["classifications"]["LR"]["C_to"],
+    )
     selector = []
     selector_param = []
 
