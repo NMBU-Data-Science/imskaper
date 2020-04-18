@@ -69,7 +69,7 @@ def experiment(config):
     X_y = pd.read_csv(config["config"]["features_file"])
 
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
-    y = X_y.iloc[:, X_y.shape[1] - 1:].values
+    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
     # import sklearn.datasets as ds
     # X, y = ds.load_breast_cancer(return_X_y=True)
@@ -186,24 +186,26 @@ def experiment(config):
 
     # very slow for large number of features
     from sklearn.svm import SVR
+
     selector.append((RFECV.__name__, RFECV(SVR(kernel="linear"))))
     selector_param.append({})
 
-    selector.append((mutual_info_classif.__name__,
-                     GenericUnivariateSelect(mutual_info_classif, 'k_best')))
-    selector_param.append(
-        {
-            "mutual_info_classif__param": sp_randint(15, 35)
-        }
+    selector.append(
+        (
+            mutual_info_classif.__name__,
+            GenericUnivariateSelect(mutual_info_classif, "k_best"),
+        )
     )
+    selector_param.append({"mutual_info_classif__param": sp_randint(15, 35)})
     from skfeature.function.similarity_based.fisher_score import fisher_score
-    selector.append((fisher_score.__name__,
-                     GenericUnivariateSelect(fisher_score, 'k_best')))
-    selector_param.append(
-        {
-            "fisher_score__param": sp_randint(10, 20)
-        }
+
+    selector.append(
+        (
+            fisher_score.__name__,
+            GenericUnivariateSelect(fisher_score, "k_best"),
+        )
     )
+    selector_param.append({"fisher_score__param": sp_randint(10, 20)})
 
     df = DataFrame(dtype="float")
 
@@ -248,8 +250,9 @@ def experiment(config):
 
     path_to_results = Path(
         config["config"]["output_dir"],
-        "results_" + "No_feature_selection" + str(time.strftime(
-            "%Y%m%d-%H%M%S")),
+        "results_"
+        + "No_feature_selection"
+        + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".csv")
     models = {
         "ridge": Pipeline([scalar, ridge_classifier]),
