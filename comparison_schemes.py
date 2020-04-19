@@ -126,13 +126,16 @@ def nested_cross_validation(
     # print(selected_features)
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
-    print(optimizer.cv_results_.get("mean_train_score")[optimizer.best_index_])
-    print(optimizer.cv_results_.get("mean_test_score")[optimizer.best_index_])
+    # print(optimizer.cv_results_.get("mean_train_score")[
+    # optimizer.best_index_])
+    # print(optimizer.cv_results_.get("mean_test_score")[
+    # optimizer.best_index_])
 
-    print(optimizer.cv_results_.get("std_train_score")[optimizer.best_index_])
-    print(optimizer.cv_results_.get("std_test_score")[optimizer.best_index_])
+    # print(optimizer.cv_results_.get("std_train_score")[
+    # optimizer.best_index_])
+    # print(optimizer.cv_results_.get("std_test_score")[optimizer.best_index_])
 
-    print(optimizer.best_score_)
+    # print(optimizer.best_score_)
 
     train_scores = optimizer.cv_results_.get("mean_train_score")[
         optimizer.best_index_
