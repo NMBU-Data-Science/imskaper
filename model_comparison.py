@@ -32,7 +32,7 @@ def model_comparison_experiment(
     max_evals: int,
     df: DataFrame,
     selector: str,
-    random_states: List = None,
+    random_state: int = 0,
     n_jobs: int = None,
     path_final_results: str = None,
 ):
@@ -59,22 +59,22 @@ def model_comparison_experiment(
 
         # Get hyper-parameters for this model.
         model_hparams = hparams[model_name]
-        for random_state in random_states:
-            result, df = nested_cross_validation(
-                X=X,
-                y=y,
-                model=model,
-                experiment_id=model_name,
-                hparams=model_hparams,
-                cv=cv,
-                score_func=score_func,
-                max_evals=max_evals,
-                random_state=random_state,
-                path_tmp_results=path_tmp_results,
-                df=df,
-                selector=selector,
-            )
-            results.append(result)
+
+        result, df = nested_cross_validation(
+            X=X,
+            y=y,
+            model=model,
+            experiment_id=model_name,
+            hparams=model_hparams,
+            cv=cv,
+            score_func=score_func,
+            max_evals=max_evals,
+            random_state=random_state,
+            path_tmp_results=path_tmp_results,
+            df=df,
+            selector=selector,
+        )
+        # results.append(result)
     print(df)
     # Remove temporary directory.
     ioutil.teardown_tempdir(path_tmp_results)

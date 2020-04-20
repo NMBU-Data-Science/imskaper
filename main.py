@@ -49,7 +49,7 @@ def experiment(config):
     CV = config["config"]["CV"]
     # The number of times each experiment is repeated with a different
     # random seed.
-    NUM_REPS = config["config"]["NUM_REPS"]
+    SEED = config["config"]["SEED"]
     # The number of hyper-parameter configurations to try evaluate.
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # Read from the CSV file that contains the features and the response.
@@ -58,20 +58,16 @@ def experiment(config):
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
-    # import sklearn.datasets as ds
-    # X, y = ds.load_breast_cancer(return_X_y=True)
 
-    # Define a series of models (example includes only one) wrapped in a
-    # Pipeline.
+    # Define a series of models wrapped in a pipeline
     scalar = (StandardScaler.__name__, StandardScaler())
     f_list = features_selectors.get_features_selectors(config)
     c_list = classifiers.get_classifiers(config)
 
     df = DataFrame(dtype="float")
 
-    # X, y = make_classification(n_samples=50, n_features=4, n_classes=2)b
-    np.random.seed(seed=0)
-    random_states = np.random.choice(1000, size=NUM_REPS)
+    # np.random.seed(seed=0)
+    random_state = SEED #s = np.random.choice(1000, size=NUM_REPS)
 
     # specify parameters and distributions to sample from
     for f_k, f_v in f_list.items():
@@ -83,45 +79,21 @@ def experiment(config):
         models = dict()
         hparams = dict()
         for k, v in c_list.items():
-            models[k] = Pipeline([scalar, f_v[0], v[0]])
-            hparams[k] = merge_dict(v[1], f_v[1])
+            if f_k == 'No feature selection':
+                models[k] = Pipeline([scalar, v[0]])
+                hparams[k] = v[1]
+            else:
+                models[k] = Pipeline([scalar, f_v[0], v[0]])
+                hparams[k] = merge_dict(v[1], f_v[1])
 
         df = model_comparison_experiment(
             models=models,
             hparams=hparams,
             path_final_results=path_to_results,
-            random_states=random_states,
+            random_state=random_state,
             score_func=roc_auc_score,
             max_evals=MAX_EVALS,
             selector=f_v[0][0],
-            cv=CV,
-            X=X,
-            y=y,
-            df=df,
-        )
-
-    path_to_results = Path(
-        config["config"]["output_dir"],
-        "results_"
-        + "No_feature_selection"
-        + str(time.strftime("%Y%m%d-%H%M%S")),
-    ).with_suffix(".csv")
-
-    # Run it one more time with no feature selection
-    for k, v in c_list.items():
-        models = dict()
-        hparams = dict()
-        models[k] = Pipeline([scalar, v[0]])
-        hparams[k] = v[1]
-
-        df = model_comparison_experiment(
-            models=models,
-            hparams=hparams,
-            path_final_results=path_to_results,
-            random_states=random_states,
-            score_func=roc_auc_score,
-            max_evals=MAX_EVALS,
-            selector="No_feature_selection",
             cv=CV,
             X=X,
             y=y,

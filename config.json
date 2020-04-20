@@ -3,7 +3,7 @@
           "features_file": "c:\\tmp\\hn_ct_c.csv",
           "output_dir": "c:\\tmp\\",
           "CV": 5,
-          "NUM_REPS": 1,
+          "SEED": 123,
           "MAX_EVALS": 80,
           "classifications":
           {

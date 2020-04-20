@@ -80,6 +80,7 @@ def get_features_selectors(config):
         ),
         fisher_param,
     )
+    f_list["No feature selection"] = ("No_feature_selection", None), None
 
     return f_list
 
