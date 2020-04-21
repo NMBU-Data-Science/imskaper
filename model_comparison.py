@@ -25,6 +25,7 @@ from utils import ioutil
 def model_comparison_experiment(
     X: np.ndarray,
     y: np.ndarray,
+    columns_names: list,
     models: Dict,
     hparams: Dict,
     score_func: Callable,
@@ -40,12 +41,20 @@ def model_comparison_experiment(
     Compare model performances with optional feature selection.
 
     Args:
-        X: Feature matrix (n samples x n features).
+        X: Feature matrix (n samples x m features).
         y: Ground truth vector (n samples).
         models: Key-value pairs with model name and a scikit-learn Pipeline.
         hparams: Optimisation objective.
-    """
+        score_func: score function
+        cv: number of cross validation splitting
+        max_evals:
+        df: dataframe to temporary store the results for plotting
+        selector: feature selector
+        random_state: random state value
+        n_jobs: number of cpu units used for processing
+        path_final_results: output directory
 
+    """
     # Set the number of workers to use for parallelisation.
     if n_jobs is None:
         n_jobs = cpu_count() - 1 if cpu_count() > 1 else 1
@@ -63,6 +72,7 @@ def model_comparison_experiment(
         result, df = nested_cross_validation(
             X=X,
             y=y,
+            columns_names=columns_names,
             model=model,
             experiment_id=model_name,
             hparams=model_hparams,
@@ -74,7 +84,7 @@ def model_comparison_experiment(
             df=df,
             selector=selector,
         )
-        # results.append(result)
+        results.append(result)
     print(df)
     # Remove temporary directory.
     ioutil.teardown_tempdir(path_tmp_results)

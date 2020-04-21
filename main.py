@@ -19,7 +19,6 @@ import warnings
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import seaborn as sns
 from pandas import DataFrame
@@ -54,7 +53,9 @@ def experiment(config):
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # Read from the CSV file that contains the features and the response.
     X_y = pd.read_csv(config["config"]["features_file"])
-
+    columns_names = X_y.columns.tolist()
+    print(type(columns_names))
+    print(columns_names)
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
@@ -97,6 +98,7 @@ def experiment(config):
             cv=CV,
             X=X,
             y=y,
+            columns_names=columns_names,
             df=df,
         )
 

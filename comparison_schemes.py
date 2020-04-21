@@ -28,6 +28,7 @@ from utils import ioutil
 def nested_cross_validation(
     X: np.ndarray,
     y: np.ndarray,
+    columns_names: list,
     experiment_id: str,
     model: str,
     hparams: dict,
@@ -54,7 +55,7 @@ def nested_cross_validation(
         cv (int): The number of cross-validation folds.
         random_states: A list of seed values for pseudo-random number
             generator.
-        output_dir: Directory to store SMAC output.
+        output_dir: Directory to store the output.
         path_tmp_results: Reference to preliminary experimental results.
 
     Returns:
@@ -126,16 +127,6 @@ def nested_cross_validation(
     # print(selected_features)
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
-    # print(optimizer.cv_results_.get("mean_train_score")[
-    # optimizer.best_index_])
-    # print(optimizer.cv_results_.get("mean_test_score")[
-    # optimizer.best_index_])
-
-    # print(optimizer.cv_results_.get("std_train_score")[
-    # optimizer.best_index_])
-    # print(optimizer.cv_results_.get("std_test_score")[optimizer.best_index_])
-
-    # print(optimizer.best_score_)
 
     train_scores = optimizer.cv_results_.get("mean_train_score")[
         optimizer.best_index_
@@ -344,3 +335,8 @@ def nested_cross_validation_old(
                     days, hours, minutes, seconds
                 )
     return output, df
+
+
+def get_selected_features(selector_array):
+    selected_features = []
+    return selected_features

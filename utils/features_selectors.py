@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+#
+# comparison_schemes.py
+#
+
+"""
+Features selection and classifications
+"""
+
+__author__ = "Ahmed Albuni"
+__email__ = "ahmed.albuni@gmail.com"
+
+
 from scipy.stats import uniform as sp_uniform
 from sklearn.feature_selection import (
     SelectFromModel,

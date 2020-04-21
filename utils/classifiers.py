@@ -1,3 +1,16 @@
+# -*- coding: utf-8 -*-
+#
+# comparison_schemes.py
+#
+
+"""
+Features selection and classifications
+"""
+
+__author__ = "Ahmed Albuni"
+__email__ = "ahmed.albuni@gmail.com"
+
+
 from lightgbm.sklearn import LGBMClassifier
 from scipy.stats import randint as sp_randint
 
