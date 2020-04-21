@@ -99,7 +99,6 @@ def experiment(config):
             df=df,
         )
 
-    print(df)
     sns.heatmap(df.transpose(), annot=True)
     plt.tight_layout()
     path_to_image = Path(

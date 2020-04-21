@@ -12,3 +12,4 @@ scipy
 pandas
 joblib
 scikit-learn
+skfeature-chappers
