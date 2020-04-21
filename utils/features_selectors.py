@@ -48,14 +48,7 @@ def get_features_selectors(config):
             ],
         ),
     }
-    var_t_param = {
-        "VarianceThreshold__threshold": sp_uniform(
-            config["config"]["selectors"]["VarianceThreshold"][
-                "threshold_from"
-            ],
-            config["config"]["selectors"]["VarianceThreshold"]["threshold_to"],
-        )
-    }
+
     multi_surf_param = {
         "MultiSURF__n_features_to_select": sp_randint(
             config["config"]["selectors"]["MultiSURF"][
@@ -75,10 +68,7 @@ def get_features_selectors(config):
         k_best_param,
     )
     f_list["relief_f"] = (ReliefF.__name__, ReliefF()), relieff_param
-    f_list["variance_threshold"] = (
-        (VarianceThreshold.__name__, VarianceThreshold()),
-        var_t_param,
-    )
+
     f_list["mutual_info"] = (
         (
             mutual_info_classif.__name__,
@@ -97,7 +87,18 @@ def get_features_selectors(config):
 
     return f_list
 
-
+   # f_list["variance_threshold"] = (
+   #      (VarianceThreshold.__name__, VarianceThreshold()),
+   #      var_t_param,
+   #  )
+# var_t_param = {
+#     "VarianceThreshold__threshold": sp_uniform(
+#         config["config"]["selectors"]["VarianceThreshold"][
+#             "threshold_from"
+#         ],
+#         config["config"]["selectors"]["VarianceThreshold"]["threshold_to"],
+#     )
+# }
 # from sklearn.svm import SVR
 # f_list['multi_SURF'] = (MultiSURF.__name__, MultiSURF()), multi_surf_param
 #  f_list['SelectFromModel'] = (SelectFromModel.__name__, SelectFromModel(

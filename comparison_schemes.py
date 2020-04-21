@@ -105,25 +105,20 @@ def nested_cross_validation(
     else:
         features = None
     if selector == "SelectKBest":
-        # selected_features += str(features.get_support())
         f = get_selected_features_kbest(features.get_support(), columns_names)
         selected_features += ', '.join(f)
     elif selector == "ReliefF":
-        # selected_features += str(features.top_features_)
-        # selected_features += str(features.n_features_to_select)
         # selected_features += str(features.feature_importances_)
         f = get_selected_features_reflieff(features.top_features_,
                                            columns_names,
                                            features.n_features_to_select)
         selected_features += ', '.join(f)
-    elif selector == "VarianceThreshold":
-        # selected_features += str(features._get_support_mask())
-        # f = get_selected_features(features._get_support_mask(),
-        # columns_names)
-        # selected_features += str(len(f)) + ":"
-        # selected_features += ', '.join(f)
-        pass
-
+    if selector == "fisher_score":
+        f = get_selected_features_kbest(features.get_support(), columns_names)
+        selected_features += ', '.join(f)
+    if selector == "mutual_info_classif":
+        f = get_selected_features_kbest(features.get_support(), columns_names)
+        selected_features += ', '.join(f)
     elif selector == "MultiSURF":
         # selected_features += str(features.top_features_)
         f = get_selected_features_reflieff(features.top_features_,

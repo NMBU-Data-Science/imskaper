@@ -72,7 +72,7 @@ def experiment(config):
     for f_k, f_v in f_list.items():
         path_to_results = Path(
             config["config"]["output_dir"],
-            "results_" + f_v[0][0] + str(time.strftime("%Y%m%d-%H%M%S")),
+            "results_" + f_v[0][0] + "_" + str(time.strftime("%Y%m%d-%H%M%S")),
         ).with_suffix(".csv")
 
         models = dict()
@@ -103,7 +103,11 @@ def experiment(config):
     print(df)
     sns.heatmap(df.transpose(), annot=True)
     plt.tight_layout()
-    plt.savefig(str(time.strftime("%Y%m%d-%H%M%S"))+".jpg")
+    path_to_image = Path(
+        config["config"]["output_dir"],
+        "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
+    ).with_suffix(".jpg")
+    plt.savefig(path_to_image)
     plt.show()
 
 
