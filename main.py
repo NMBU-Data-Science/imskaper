@@ -99,7 +99,9 @@ def experiment(config):
             df=df,
         )
 
-    sns.heatmap(df.transpose(), annot=True)
+    sns.heatmap(df.transpose(), annot=True, fmt=".1%")
+    plt.xlabel('Classification Algorithms')
+    plt.ylabel('Feature Selection Algorithms')
     plt.tight_layout()
     path_to_image = Path(
         config["config"]["output_dir"],
