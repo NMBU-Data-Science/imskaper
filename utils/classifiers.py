@@ -81,6 +81,8 @@ def get_classifiers(config):
         (LogisticRegression.__name__, LogisticRegression()),
         lr_param,
     )
-    classifiers["et"] = (ExtraTreesClassifier.__name__,
-                         ExtraTreesClassifier()), et_param
+    classifiers["et"] = (
+        (ExtraTreesClassifier.__name__, ExtraTreesClassifier()),
+        et_param,
+    )
     return classifiers

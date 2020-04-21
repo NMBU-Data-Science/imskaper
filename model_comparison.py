@@ -12,7 +12,7 @@ __email__ = "langberg91@gmail.com"
 
 
 from multiprocessing import cpu_count
-from typing import Callable, Dict, List
+from typing import Callable, Dict
 
 import numpy as np
 from pandas import DataFrame
@@ -44,6 +44,7 @@ def model_comparison_experiment(
         X: Feature matrix (n samples x m features).
         y: Ground truth vector (n samples).
         models: Key-value pairs with model name and a scikit-learn Pipeline.
+        columns_names: name of the features
         hparams: Optimisation objective.
         score_func: score function
         cv: number of cross validation splitting

@@ -20,7 +20,7 @@ from typing import Callable
 
 import numpy as np
 from pandas import DataFrame
-from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
+from sklearn.model_selection import RandomizedSearchCV
 
 from utils import ioutil
 
@@ -106,25 +106,29 @@ def nested_cross_validation(
         features = None
     if selector == "SelectKBest":
         f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ', '.join(f)
+        selected_features += ", ".join(f)
     elif selector == "ReliefF":
         # selected_features += str(features.feature_importances_)
-        f = get_selected_features_reflieff(features.top_features_,
-                                           columns_names,
-                                           features.n_features_to_select)
-        selected_features += ', '.join(f)
+        f = get_selected_features_reflieff(
+            features.top_features_,
+            columns_names,
+            features.n_features_to_select,
+        )
+        selected_features += ", ".join(f)
     elif selector == "fisher_score":
         f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ', '.join(f)
+        selected_features += ", ".join(f)
     elif selector == "mutual_info_classif":
         f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ', '.join(f)
+        selected_features += ", ".join(f)
     elif selector == "MultiSURF":
         # selected_features += str(features.top_features_)
-        f = get_selected_features_reflieff(features.top_features_,
-                                           columns_names,
-                                           features.n_features_to_select)
-        selected_features += ', '.join(f)
+        f = get_selected_features_reflieff(
+            features.top_features_,
+            columns_names,
+            features.n_features_to_select,
+        )
+        selected_features += ", ".join(f)
 
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
@@ -193,4 +197,3 @@ def get_selected_features_reflieff(slector_array, features_list, num):
             selected_features.append(features_list[val])
 
     return selected_features
-

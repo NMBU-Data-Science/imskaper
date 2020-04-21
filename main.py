@@ -65,7 +65,6 @@ def experiment(config):
 
     df = DataFrame(dtype="float")
 
-    # np.random.seed(seed=0)
     random_state = SEED
 
     # specify parameters and distributions to sample from
@@ -78,7 +77,7 @@ def experiment(config):
         models = dict()
         hparams = dict()
         for k, v in c_list.items():
-            if f_k == 'No feature selection':
+            if f_k == "No feature selection":
                 models[k] = Pipeline([scalar, v[0]])
                 hparams[k] = v[1]
             else:

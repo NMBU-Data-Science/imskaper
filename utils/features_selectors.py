@@ -11,17 +11,12 @@ __author__ = "Ahmed Albuni"
 __email__ = "ahmed.albuni@gmail.com"
 
 
-from scipy.stats import uniform as sp_uniform
 from sklearn.feature_selection import (
-    SelectFromModel,
     SelectKBest,
-    VarianceThreshold,
     mutual_info_classif,
-    RFECV,
     GenericUnivariateSelect,
-    chi2,
 )
-from skrebate import MultiSURF, ReliefF
+from skrebate import ReliefF
 from scipy.stats import randint as sp_randint
 from skfeature.function.similarity_based.fisher_score import fisher_score
 
@@ -77,10 +72,11 @@ def get_features_selectors(config):
 
     return f_list
 
-   # f_list["variance_threshold"] = (
-   #      (VarianceThreshold.__name__, VarianceThreshold()),
-   #      var_t_param,
-   #  )
+
+# f_list["variance_threshold"] = (
+#      (VarianceThreshold.__name__, VarianceThreshold()),
+#      var_t_param,
+#  )
 # var_t_param = {
 #     "VarianceThreshold__threshold": sp_uniform(
 #         config["config"]["selectors"]["VarianceThreshold"][
