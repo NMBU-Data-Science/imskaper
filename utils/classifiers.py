@@ -14,6 +14,7 @@ __email__ = "ahmed.albuni@gmail.com"
 from lightgbm.sklearn import LGBMClassifier
 from scipy.stats import randint as sp_randint
 
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.linear_model import RidgeClassifier, LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
@@ -26,6 +27,7 @@ def get_classifiers(config):
     svc_param = dict()
     dt_param = dict()
     lr_param = dict()
+    et_param = dict()
 
     ridge_param["RidgeClassifier__alpha"] = sp_randint(
         config["config"]["classifications"]["Ridge"]["alpha_from"],
@@ -79,5 +81,6 @@ def get_classifiers(config):
         (LogisticRegression.__name__, LogisticRegression()),
         lr_param,
     )
-
+    classifiers["et"] = (ExtraTreesClassifier.__name__,
+                         ExtraTreesClassifier()), et_param
     return classifiers

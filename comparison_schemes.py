@@ -113,10 +113,10 @@ def nested_cross_validation(
                                            columns_names,
                                            features.n_features_to_select)
         selected_features += ', '.join(f)
-    if selector == "fisher_score":
+    elif selector == "fisher_score":
         f = get_selected_features_kbest(features.get_support(), columns_names)
         selected_features += ', '.join(f)
-    if selector == "mutual_info_classif":
+    elif selector == "mutual_info_classif":
         f = get_selected_features_kbest(features.get_support(), columns_names)
         selected_features += ', '.join(f)
     elif selector == "MultiSURF":
@@ -126,10 +126,6 @@ def nested_cross_validation(
                                            features.n_features_to_select)
         selected_features += ', '.join(f)
 
-    elif selector == "SelectFromModel":
-        pass
-
-    # print(selected_features)
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
 
