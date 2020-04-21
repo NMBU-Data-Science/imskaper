@@ -54,8 +54,6 @@ def experiment(config):
     # Read from the CSV file that contains the features and the response.
     X_y = pd.read_csv(config["config"]["features_file"])
     columns_names = X_y.columns.tolist()
-    print(type(columns_names))
-    print(columns_names)
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
@@ -68,7 +66,7 @@ def experiment(config):
     df = DataFrame(dtype="float")
 
     # np.random.seed(seed=0)
-    random_state = SEED #s = np.random.choice(1000, size=NUM_REPS)
+    random_state = SEED
 
     # specify parameters and distributions to sample from
     for f_k, f_v in f_list.items():
@@ -105,7 +103,7 @@ def experiment(config):
     print(df)
     sns.heatmap(df.transpose(), annot=True)
     plt.tight_layout()
-    plt.savefig("x.jpg")
+    plt.savefig(str(time.strftime("%Y%m%d-%H%M%S"))+".jpg")
     plt.show()
 
 
