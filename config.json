@@ -39,15 +39,7 @@
                 "n_neighbors_to": 3,
                 "n_features_to_select_from": 10,
                 "n_features_to_select_to": 30
-            },
-              "VarianceThreshold": {
-                "threshold_from": 0.0,
-                "threshold_to": 0.9
-              },
-              "MultiSURF": {
-                "n_features_to_select_from": 25,
-                "n_features_to_select_to": 45
-              }
+            }
         }
     }
 }

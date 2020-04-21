@@ -49,16 +49,6 @@ def get_features_selectors(config):
         ),
     }
 
-    multi_surf_param = {
-        "MultiSURF__n_features_to_select": sp_randint(
-            config["config"]["selectors"]["MultiSURF"][
-                "n_features_to_select_from"
-            ],
-            config["config"]["selectors"]["MultiSURF"][
-                "n_features_to_select_to"
-            ],
-        )
-    }
     mutual_info_param = {"mutual_info_classif__param": sp_randint(15, 35)}
     fisher_param = {"fisher_score__param": sp_randint(10, 20)}
 
@@ -102,6 +92,16 @@ def get_features_selectors(config):
 # from sklearn.svm import SVR
 # f_list['multi_SURF'] = (MultiSURF.__name__, MultiSURF()), multi_surf_param
 #  f_list['SelectFromModel'] = (SelectFromModel.__name__, SelectFromModel(
+#     multi_surf_param = {
+#         "MultiSURF__n_features_to_select": sp_randint(
+#             config["config"]["selectors"]["MultiSURF"][
+#                 "n_features_to_select_from"
+#             ],
+#             config["config"]["selectors"]["MultiSURF"][
+#                 "n_features_to_select_to"
+#             ],
+#         )
+#     }
 #      LassoCV())), {}}
 #  f_list['rfecv'] = (RFECV.__name__, RFECV(SVR(kernel="linear"))), \
 #                    {}}
