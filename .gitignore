@@ -112,3 +112,7 @@ tmp_comparison/
 *.jpg
 
 features_extraction/test.py
+
+setup.py
+
+test.py
