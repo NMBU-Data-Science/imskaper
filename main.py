@@ -99,9 +99,10 @@ def experiment(config):
             df=df,
         )
 
-    sns.heatmap(df.transpose(), annot=True, fmt=".1%")
+    sns.heatmap(df.transpose()*100, annot=True, fmt='.1f')
     plt.xlabel('Classification Algorithms')
     plt.ylabel('Feature Selection Algorithms')
+    plt.title('AUC', x=1.1, y=1.1)
     plt.tight_layout()
     path_to_image = Path(
         config["config"]["output_dir"],
@@ -116,15 +117,13 @@ def merge_dict(dict1, dict2):
     merged.update(dict2)
     return merged
 
-
-def balanced_roc_auc(y_true, y_pred):
-    """Define a balanced ROC AUC optimization metric."""
-    return roc_auc_score(y_true, y_pred, average="weighted")
+#
+# def balanced_roc_auc(y_true, y_pred):
+#     """Define a balanced ROC AUC optimization metric."""
+#     return roc_auc_score(y_true, y_pred, average="weighted")
 
 
 if __name__ == "__main__":
-    logging.disable(logging.CRITICAL)
-    warnings.filterwarnings("ignore")
 
     args = parser.parse_args()
 

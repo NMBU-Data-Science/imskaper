@@ -63,6 +63,14 @@ def get_classifiers(config):
         config["config"]["classifications"]["LR"]["C_to"],
     )
 
+    et_param["ExtraTreesClassifier__n_estimators"] = sp_randint(
+        10,
+        200,
+    )
+    et_param["ExtraTreesClassifier__criterion"] = ('gini', 'entropy')
+    dt_param["DecisionTreeClassifier__criterion"] = ('gini', 'entropy')
+    dt_param["DecisionTreeClassifier__max_depth"] = (5, 10, 15, 20, 25, None)
+    dt_param["DecisionTreeClassifier__min_samples_leaf"] = (1, 7)
     classifiers = dict()
     classifiers["ridge"] = (
         (RidgeClassifier.__name__, RidgeClassifier()),
