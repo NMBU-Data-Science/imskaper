@@ -62,8 +62,8 @@ def get_classifiers(config):
         config["config"]["classifications"]["LR"]["C_from"],
         config["config"]["classifications"]["LR"]["C_to"],
     )
-    et_param["ExtraTreesClassifier__criterion"] = ('gini', 'entropy')
-    dt_param["DecisionTreeClassifier__criterion"] = ('gini', 'entropy')
+    et_param["ExtraTreesClassifier__criterion"] = ("gini", "entropy")
+    dt_param["DecisionTreeClassifier__criterion"] = ("gini", "entropy")
     dt_param["DecisionTreeClassifier__max_depth"] = (15, 20, None)
     dt_param["DecisionTreeClassifier__min_samples_leaf"] = (1, 4)
     classifiers = dict()

@@ -100,10 +100,10 @@ def experiment(config):
             df=df,
         )
 
-    sns.heatmap(df.transpose()*100, annot=True, fmt='.1f')
-    plt.xlabel('Classification Algorithms')
-    plt.ylabel('Feature Selection Algorithms')
-    plt.title('AUC', x=1.1, y=1.1)
+    sns.heatmap(df.transpose() * 100, annot=True, fmt=".1f")
+    plt.xlabel("Classification Algorithms")
+    plt.ylabel("Feature Selection Algorithms")
+    plt.title("AUC", x=1.1, y=1.1)
     plt.tight_layout()
     path_to_image = Path(
         config["config"]["output_dir"],

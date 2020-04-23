@@ -32,18 +32,26 @@
             {
               "SelectKBest": {
                 "K_from": 10,
-                "K_to": 30
+                "K_to": 35
             },
               "ReliefF": {
                 "n_neighbors_from": 1,
                 "n_neighbors_to": 3,
                 "n_features_to_select_from": 10,
-                "n_features_to_select_to": 30
+                "n_features_to_select_to": 35
             },
               "VarianceThreshold": {
                 "threshold_from": 0.1,
                 "threshold_to": 0.9
-              }
+              },
+              "mutual_info": {
+                "param_from": 10,
+                "param_to": 35
+            },
+              "fisher_score": {
+                "param_from": 10,
+                "param_to": 35
+            }
         }
     }
 }

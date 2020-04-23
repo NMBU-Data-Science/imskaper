@@ -45,8 +45,18 @@ def get_features_selectors(config):
             ],
         ),
     }
-    mutual_info_param = {"mutual_info_classif__param": sp_randint(15, 35)}
-    fisher_param = {"fisher_score__param": sp_randint(10, 20)}
+    mutual_info_param = {
+        "mutual_info_classif__param": sp_randint(
+            config["config"]["selectors"]["mutual_info"]["param_from"],
+            config["config"]["selectors"]["mutual_info"]["param_to"],
+        )
+    }
+    fisher_param = {
+        "fisher_score__param": sp_randint(
+            config["config"]["selectors"]["fisher_score"]["param_from"],
+            config["config"]["selectors"]["fisher_score"]["param_to"],
+        )
+    }
     var_t_param = {
         "VarianceThreshold__threshold": sp_uniform(
             config["config"]["selectors"]["VarianceThreshold"][
@@ -77,9 +87,9 @@ def get_features_selectors(config):
         fisher_param,
     )
     f_list["variance_threshold"] = (
-         (VarianceThreshold.__name__, VarianceThreshold()),
-         var_t_param,
-     )
+        (VarianceThreshold.__name__, VarianceThreshold()),
+        var_t_param,
+    )
 
     f_list["No feature selection"] = ("No_feature_selection", None), None
 
