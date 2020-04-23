@@ -11,10 +11,12 @@ __author__ = "Ahmed Albuni"
 __email__ = "ahmed.albuni@gmail.com"
 
 
+from scipy.stats import uniform as sp_uniform
 from sklearn.feature_selection import (
     SelectKBest,
     mutual_info_classif,
     GenericUnivariateSelect,
+    VarianceThreshold,
 )
 from skrebate import ReliefF
 from scipy.stats import randint as sp_randint
@@ -43,10 +45,16 @@ def get_features_selectors(config):
             ],
         ),
     }
-
     mutual_info_param = {"mutual_info_classif__param": sp_randint(15, 35)}
     fisher_param = {"fisher_score__param": sp_randint(10, 20)}
-
+    var_t_param = {
+        "VarianceThreshold__threshold": sp_uniform(
+            config["config"]["selectors"]["VarianceThreshold"][
+                "threshold_from"
+            ],
+            config["config"]["selectors"]["VarianceThreshold"]["threshold_to"],
+        )
+    }
     f_list = dict()
     f_list["select_k_best"] = (
         (SelectKBest.__name__, SelectKBest(mutual_info_classif)),
@@ -68,23 +76,16 @@ def get_features_selectors(config):
         ),
         fisher_param,
     )
+    f_list["variance_threshold"] = (
+         (VarianceThreshold.__name__, VarianceThreshold()),
+         var_t_param,
+     )
+
     f_list["No feature selection"] = ("No_feature_selection", None), None
 
     return f_list
 
 
-# f_list["variance_threshold"] = (
-#      (VarianceThreshold.__name__, VarianceThreshold()),
-#      var_t_param,
-#  )
-# var_t_param = {
-#     "VarianceThreshold__threshold": sp_uniform(
-#         config["config"]["selectors"]["VarianceThreshold"][
-#             "threshold_from"
-#         ],
-#         config["config"]["selectors"]["VarianceThreshold"]["threshold_to"],
-#     )
-# }
 # from sklearn.svm import SVR
 # f_list['multi_SURF'] = (MultiSURF.__name__, MultiSURF()), multi_surf_param
 #  f_list['SelectFromModel'] = (SelectFromModel.__name__, SelectFromModel(

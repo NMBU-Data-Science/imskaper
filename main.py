@@ -81,7 +81,10 @@ def experiment(config):
                 models[k] = Pipeline([scalar, v[0]])
                 hparams[k] = v[1]
             else:
-                models[k] = Pipeline([scalar, f_v[0], v[0]])
+                if f_v[0][0] == "VarianceThreshold":
+                    models[k] = Pipeline([f_v[0], scalar, v[0]])
+                else:
+                    models[k] = Pipeline([scalar, f_v[0], v[0]])
                 hparams[k] = merge_dict(v[1], f_v[1])
 
         df = model_comparison_experiment(
@@ -99,7 +102,10 @@ def experiment(config):
             df=df,
         )
 
-    sns.heatmap(df.transpose()*100, annot=True, fmt='.1f')
+    import numpy as np
+    h = sns.heatmap(df.transpose()*100, annot=True, fmt='.1f',
+                    vmin=np.nanmin(df) * 100 - 3,
+                    vmax=np.nanmax(df) * 100 + 3)
     plt.xlabel('Classification Algorithms')
     plt.ylabel('Feature Selection Algorithms')
     plt.title('AUC', x=1.1, y=1.1)

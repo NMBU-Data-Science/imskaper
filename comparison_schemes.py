@@ -102,33 +102,18 @@ def nested_cross_validation(
 
     if selector != "No_feature_selection":
         features = best_model.named_steps[selector]
+        if selector == "ReliefF" or selector == "MultiSURF":
+            f = get_selected_features_reflieff(
+                features.top_features_,
+                columns_names,
+                features.n_features_to_select,
+            )
+            selected_features += ", ".join(f)
+        else:
+            f = get_selected_features(features.get_support(), columns_names)
+            selected_features += ", ".join(f)
     else:
         features = None
-    if selector == "SelectKBest":
-        f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ", ".join(f)
-    elif selector == "ReliefF":
-        # selected_features += str(features.feature_importances_)
-        f = get_selected_features_reflieff(
-            features.top_features_,
-            columns_names,
-            features.n_features_to_select,
-        )
-        selected_features += ", ".join(f)
-    elif selector == "fisher_score":
-        f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ", ".join(f)
-    elif selector == "mutual_info_classif":
-        f = get_selected_features_kbest(features.get_support(), columns_names)
-        selected_features += ", ".join(f)
-    elif selector == "MultiSURF":
-        # selected_features += str(features.top_features_)
-        f = get_selected_features_reflieff(
-            features.top_features_,
-            columns_names,
-            features.n_features_to_select,
-        )
-        selected_features += ", ".join(f)
 
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
@@ -180,7 +165,7 @@ def nested_cross_validation(
     return output, df
 
 
-def get_selected_features_kbest(selector_array, features_list):
+def get_selected_features(selector_array, features_list):
 
     selected_features = []
     for i, val in enumerate(selector_array):

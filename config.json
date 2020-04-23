@@ -39,7 +39,11 @@
                 "n_neighbors_to": 3,
                 "n_features_to_select_from": 10,
                 "n_features_to_select_to": 30
-            }
+            },
+              "VarianceThreshold": {
+                "threshold_from": 0.1,
+                "threshold_to": 0.9
+              }
         }
     }
 }
