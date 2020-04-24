@@ -7,8 +7,8 @@
 Work function for model comparison experiments.
 """
 
-__author__ = "Severin Langberg"
-__email__ = "langberg91@gmail.com"
+__author__ = "Severin Langberg, Ahmed Albuni"
+__email__ = "langberg91@gmail.com, ahmed85@gmail.com"
 
 
 from multiprocessing import cpu_count

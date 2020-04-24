@@ -46,26 +46,27 @@ def experiment(config):
     CV = config["config"]["CV"]
     # The number of times each experiment is repeated with a different
     # random seed.
-    SEED = config["config"]["SEED"]
-    # The number of hyper-parameter configurations to try evaluate.
+    random_state = config["config"]["SEED"]
+    # The number of hyper-parameter configurations to try evaluating.
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # Read from the CSV file that contains the features and the response.
     X_y = pd.read_csv(config["config"]["features_file"])
+    # Store column names to be used to get selected features.
     columns_names = X_y.columns.tolist()
+    # the response y should be the last field in the dataset csv file.
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
 
-    # Define a series of models wrapped in a pipeline
     scalar = (StandardScaler.__name__, StandardScaler())
+    # Get lists of feature selectors and classifier to be used in the pipeline.
     f_list = features_selectors.get_features_selectors(config)
     c_list = classifiers.get_classifiers(config)
 
-    df = DataFrame(dtype="float")
+    # df to store the results for the final graph of the corss-validation.
+    scores_df = DataFrame(dtype="float")
 
-    random_state = SEED
-
-    # specify parameters and distributions to sample from
+    # Loop over the feature selectors.
     for f_k, f_v in f_list.items():
         path_to_results = Path(
             config["config"]["output_dir"],
@@ -74,18 +75,20 @@ def experiment(config):
 
         models = dict()
         hparams = dict()
+        # Loop over the classifications algorithms.
         for k, v in c_list.items():
             if f_k == "No feature selection":
                 models[k] = Pipeline([scalar, v[0]])
                 hparams[k] = v[1]
             else:
+                # We should not scale the data before VarianceThreshold
                 if f_v[0][0] == "VarianceThreshold":
                     models[k] = Pipeline([f_v[0], scalar, v[0]])
                 else:
                     models[k] = Pipeline([scalar, f_v[0], v[0]])
                 hparams[k] = merge_dict(v[1], f_v[1])
 
-        df = model_comparison_experiment(
+        scores_df = model_comparison_experiment(
             models=models,
             hparams=hparams,
             path_final_results=path_to_results,
@@ -97,10 +100,12 @@ def experiment(config):
             X=X,
             y=y,
             columns_names=columns_names,
-            df=df,
+            df=scores_df,
         )
 
-    sns.heatmap(df.transpose() * 100, annot=True, fmt=".1f")
+    # Plot a heat-map of the scores obtained from the various feature
+    # selectors and classifiers.
+    sns.heatmap(scores_df.transpose() * 100, annot=True, fmt=".1f")
     plt.xlabel("Classification Algorithms")
     plt.ylabel("Feature Selection Algorithms")
     plt.title("AUC", x=1.1, y=1.1)
@@ -109,7 +114,7 @@ def experiment(config):
         config["config"]["output_dir"],
         "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".jpg")
-    plt.savefig(path_to_image)
+    plt.savefig(path_to_image, dpi=200)
     plt.show()
 
 
