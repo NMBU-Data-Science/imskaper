@@ -23,7 +23,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from model_comparison import model_comparison_experiment
+from experiment.model_comparison import model_comparison_experiment
 from utils import features_selectors
 from utils import classifiers
 

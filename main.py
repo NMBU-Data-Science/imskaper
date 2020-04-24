@@ -13,7 +13,7 @@ __email__ = "ahmed.albuni@gmail.com"
 
 import argparse
 import json
-import experiment
+import experiment.experiment as ex
 
 parser = argparse.ArgumentParser(
     description="Features selection and " "classifications (2 classes)"
@@ -33,4 +33,4 @@ if __name__ == "__main__":
     with open(args.file) as config_file:
         config = json.load(config_file)
 
-    experiment.experiment(config)
+    ex.experiment(config)
