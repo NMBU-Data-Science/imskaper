@@ -99,7 +99,7 @@ def nested_cross_validation(
         cv=cv,
         random_state=random_state,
         return_train_score=True,
-        n_jobs=n_jobs
+        n_jobs=n_jobs,
     )
     optimizer.fit(X, y)
     # Include the optimal hyper-parameters in the output.
@@ -177,9 +177,9 @@ def get_selected_features(selector_array, features_list):
     return selected_features
 
 
-def get_selected_features_reflieff(slector_array, features_list, num):
+def get_selected_features_reflieff(selector_array, features_list, num):
     selected_features = []
-    for i, val in enumerate(slector_array):
+    for i, val in enumerate(selector_array):
         if i < num:
             selected_features.append(features_list[val])
 
