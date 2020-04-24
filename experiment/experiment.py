@@ -19,7 +19,6 @@ import pandas as pd
 import seaborn as sns
 from pandas import DataFrame
 
-from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -80,7 +79,7 @@ def experiment(config):
             hparams=hparams,
             path_final_results=path_to_results,
             random_state=random_state,
-            score_func=roc_auc_score,
+            score_func="roc_auc",
             max_evals=MAX_EVALS,
             selector=f_v[0][0],
             cv=CV,

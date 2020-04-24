@@ -11,8 +11,7 @@ __author__ = "Severin Langberg, Ahmed Albuni"
 __email__ = "langberg91@gmail.com, ahmed85@gmail.com"
 
 
-from multiprocessing import cpu_count
-from typing import Callable, Dict
+from typing import Dict
 
 import numpy as np
 from pandas import DataFrame
@@ -28,7 +27,7 @@ def model_comparison_experiment(
     columns_names: list,
     models: Dict,
     hparams: Dict,
-    score_func: Callable,
+    score_func: str,
     cv: int,
     max_evals: int,
     df: DataFrame,
@@ -56,10 +55,6 @@ def model_comparison_experiment(
         path_final_results: output directory
 
     """
-    # Set the number of workers to use for parallelisation.
-    if n_jobs is None:
-        n_jobs = cpu_count() - 1 if cpu_count() > 1 else 1
-
     # Setup temporary directory to store preliminary results.
     path_tmp_results = ioutil.setup_tempdir("tmp_comparison", root=".")
 
