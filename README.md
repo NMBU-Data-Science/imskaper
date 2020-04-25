@@ -4,6 +4,16 @@ This project consists of two separate tools, one for radiomics feature
  extractions, and the second tool is for running experiments with different
   feature selection algorithms with various classifiers.  
 
+1. [ Getting Started ](#getting-started)
+
+    1.1. [ Prerequisites ](#prerequisites)
+    
+    1.2. [ Installation ](#installing)
+2. [ Features Extraction ](#features-extraction)
+3. [ Features selection and classifications ](#features-selection-and-classifications)
+4. [ License ](#license)
+5. [ Acknowledgments ](#acknowledgments)
+
 ## Getting Started
 
 Download or clone the code to your local machine and follow the instructions
@@ -26,6 +36,8 @@ If you are not familiar with the command line window, you can change the current
 Go through this quick tutorial for more information: [https://www.digitalcitizen.life/command-prompt-how-use-basic-commands](https://www.digitalcitizen.life/command-prompt-how-use-basic-commands)
 
 After installing the project requirements, you should be able to run both the classifications and the features extraction tools.
+
+# Features Extraction:
 
 For features extraction, use the command prompt and navigate to the following folder:
 
