@@ -81,10 +81,11 @@ In addition to the heatmap, the tool will provide a csv files with the details o
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Original author of the previous version of the Biorad project: Severin
+ Langberg
+* Project supervisor: Cecilia Marie Futsæther
+
