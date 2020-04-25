@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# comparison_schemes.py
+# experiment.py
 #
 
 """

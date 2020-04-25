@@ -33,7 +33,6 @@ def model_comparison_experiment(
     df: DataFrame,
     selector: str,
     random_state: int = 0,
-    n_jobs: int = None,
     path_final_results: str = None,
 ):
     """

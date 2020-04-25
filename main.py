@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# comparison_schemes.py
+# main.py
 #
 
 """
@@ -14,6 +14,7 @@ __email__ = "ahmed.albuni@gmail.com"
 import argparse
 import json
 import experiment.experiment as ex
+import validations.validate_config as validate
 
 parser = argparse.ArgumentParser(
     description="Features selection and " "classifications (2 classes)"
@@ -32,5 +33,5 @@ if __name__ == "__main__":
 
     with open(args.file) as config_file:
         config = json.load(config_file)
-
-    ex.experiment(config)
+    if validate.validate_config_file(config):
+        ex.experiment(config)

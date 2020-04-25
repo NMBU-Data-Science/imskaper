@@ -1,0 +1,656 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The Root Schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "additionalProperties": true,
+    "required": [
+        "config"
+    ],
+    "properties": {
+        "config": {
+            "$id": "#/properties/config",
+            "type": "object",
+            "title": "The Config Schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "selectors": {
+                        "VarianceThreshold": {
+                            "threshold_from": 0.1,
+                            "threshold_to": 0.9
+                        },
+                        "mutual_info": {
+                            "param_from": 10.0,
+                            "param_to": 35.0
+                        },
+                        "fisher_score": {
+                            "param_from": 10.0,
+                            "param_to": 35.0
+                        },
+                        "SelectKBest": {
+                            "K_from": 10.0,
+                            "K_to": 35.0
+                        },
+                        "ReliefF": {
+                            "n_neighbors_to": 3.0,
+                            "n_features_to_select_from": 10.0,
+                            "n_features_to_select_to": 35.0,
+                            "n_neighbors_from": 1.0
+                        }
+                    },
+                    "CV": 5.0,
+                    "output_dir": "c:\\tmp\\",
+                    "MAX_EVALS": 40.0,
+                    "classifications": {
+                        "LGBM": {
+                            "num_leaves_to": 20.0,
+                            "max_depth_from": 5.0,
+                            "num_leaves_from": 3.0,
+                            "max_depth_to": 50.0,
+                            "min_child_s_to": 5.0,
+                            "min_child_s_from": 2.0
+                        },
+                        "Ridge": {
+                            "alpha_from": 1.0,
+                            "alpha_to": 5.0
+                        },
+                        "CVS": {
+                            "C_to": 5.0,
+                            "C_from": 1.0
+                        },
+                        "LR": {
+                            "C_from": 1.0,
+                            "C_to": 2.0
+                        }
+                    },
+                    "features_file": "c:\\tmp\\Set1_T2.csv",
+                    "SEED": 321.0
+                }
+            ],
+            "additionalProperties": true,
+            "required": [
+                "features_file",
+                "output_dir",
+                "CV",
+                "SEED",
+                "MAX_EVALS",
+                "classifications",
+                "selectors"
+            ],
+            "properties": {
+                "features_file": {
+                    "$id": "#/properties/config/properties/features_file",
+                    "type": "string",
+                    "title": "The Features_file Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "c:\\tmp\\Set1_T2.csv"
+                    ]
+                },
+                "output_dir": {
+                    "$id": "#/properties/config/properties/output_dir",
+                    "type": "string",
+                    "title": "The Output_dir Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "c:\\tmp\\"
+                    ]
+                },
+                "CV": {
+                    "$id": "#/properties/config/properties/CV",
+                    "type": "integer",
+                    "minimum": 2,
+                    "title": "CV splits",
+                    "description": "Number of CV splits",
+                    "default": 5,
+                    "examples": [
+                        4
+                    ]
+                },
+                "SEED": {
+                    "$id": "#/properties/config/properties/SEED",
+                    "type": "integer",
+                    "minimum": 0,
+                    "title": "The Seed Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        321
+                    ]
+                },
+                "MAX_EVALS": {
+                    "$id": "#/properties/config/properties/MAX_EVALS",
+                    "type": "integer",
+                    "minimum": 1,
+                    "title": "The Max_evals Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 80,
+                    "examples": [
+                        40.0
+                    ]
+                },
+                "classifications": {
+                    "$id": "#/properties/config/properties/classifications",
+                    "type": "object",
+                    "title": "The Classifications Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "LGBM": {
+                                "min_child_s_from": 2.0,
+                                "num_leaves_to": 20.0,
+                                "max_depth_from": 5.0,
+                                "num_leaves_from": 3.0,
+                                "max_depth_to": 50.0,
+                                "min_child_s_to": 5.0
+                            },
+                            "Ridge": {
+                                "alpha_from": 1.0,
+                                "alpha_to": 5.0
+                            },
+                            "CVS": {
+                                "C_to": 5.0,
+                                "C_from": 1.0
+                            },
+                            "LR": {
+                                "C_from": 1.0,
+                                "C_to": 2.0
+                            }
+                        }
+                    ],
+                    "additionalProperties": true,
+                    "required": [
+                        "Ridge",
+                        "LGBM",
+                        "CVS",
+                        "LR"
+                    ],
+                    "properties": {
+                        "Ridge": {
+                            "$id": "#/properties/config/properties/classifications/properties/Ridge",
+                            "type": "object",
+                            "title": "The Ridge Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "alpha_from": 1.0,
+                                    "alpha_to": 5.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "alpha_from",
+                                "alpha_to"
+                            ],
+                            "properties": {
+                                "alpha_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/Ridge/properties/alpha_from",
+                                    "type": "integer",
+                                    "title": "The Alpha_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1.0
+                                    ]
+                                },
+                                "alpha_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/Ridge/properties/alpha_to",
+                                    "type": "integer",
+                                    "title": "The Alpha_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        5.0
+                                    ]
+                                }
+                            }
+                        },
+                        "LGBM": {
+                            "$id": "#/properties/config/properties/classifications/properties/LGBM",
+                            "type": "object",
+                            "title": "The Lgbm Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "max_depth_to": 50.0,
+                                    "min_child_s_to": 5.0,
+                                    "min_child_s_from": 2.0,
+                                    "num_leaves_to": 20.0,
+                                    "max_depth_from": 5.0,
+                                    "num_leaves_from": 3.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "max_depth_from",
+                                "max_depth_to",
+                                "num_leaves_from",
+                                "num_leaves_to",
+                                "min_child_s_from",
+                                "min_child_s_to"
+                            ],
+                            "properties": {
+                                "max_depth_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/max_depth_from",
+                                    "type": "integer",
+                                    "title": "The Max_depth_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        5.0
+                                    ]
+                                },
+                                "max_depth_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/max_depth_to",
+                                    "type": "integer",
+                                    "title": "The Max_depth_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        50.0
+                                    ]
+                                },
+                                "num_leaves_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/num_leaves_from",
+                                    "type": "integer",
+                                    "title": "The Num_leaves_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        3.0
+                                    ]
+                                },
+                                "num_leaves_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/num_leaves_to",
+                                    "type": "integer",
+                                    "title": "The Num_leaves_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        20.0
+                                    ]
+                                },
+                                "min_child_s_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/min_child_s_from",
+                                    "type": "integer",
+                                    "title": "The Min_child_s_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        2.0
+                                    ]
+                                },
+                                "min_child_s_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LGBM/properties/min_child_s_to",
+                                    "type": "integer",
+                                    "title": "The Min_child_s_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        5.0
+                                    ]
+                                }
+                            }
+                        },
+                        "CVS": {
+                            "$id": "#/properties/config/properties/classifications/properties/CVS",
+                            "type": "object",
+                            "title": "The Cvs Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "C_to": 5.0,
+                                    "C_from": 1.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "C_from",
+                                "C_to"
+                            ],
+                            "properties": {
+                                "C_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/CVS/properties/C_from",
+                                    "type": "integer",
+                                    "title": "The C_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1.0
+                                    ]
+                                },
+                                "C_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/CVS/properties/C_to",
+                                    "type": "integer",
+                                    "title": "The C_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        5.0
+                                    ]
+                                }
+                            }
+                        },
+                        "LR": {
+                            "$id": "#/properties/config/properties/classifications/properties/LR",
+                            "type": "object",
+                            "title": "The Lr Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "C_to": 2.0,
+                                    "C_from": 1.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "C_from",
+                                "C_to"
+                            ],
+                            "properties": {
+                                "C_from": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LR/properties/C_from",
+                                    "type": "integer",
+                                    "title": "The C_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1.0
+                                    ]
+                                },
+                                "C_to": {
+                                    "$id": "#/properties/config/properties/classifications/properties/LR/properties/C_to",
+                                    "type": "integer",
+                                    "title": "The C_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        2.0
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "selectors": {
+                    "$id": "#/properties/config/properties/selectors",
+                    "type": "object",
+                    "title": "The Selectors Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "fisher_score": {
+                                "param_from": 10.0,
+                                "param_to": 35.0
+                            },
+                            "SelectKBest": {
+                                "K_from": 10.0,
+                                "K_to": 35.0
+                            },
+                            "ReliefF": {
+                                "n_features_to_select_to": 35.0,
+                                "n_neighbors_from": 1.0,
+                                "n_neighbors_to": 3.0,
+                                "n_features_to_select_from": 10.0
+                            },
+                            "VarianceThreshold": {
+                                "threshold_to": 0.9,
+                                "threshold_from": 0.1
+                            },
+                            "mutual_info": {
+                                "param_from": 10.0,
+                                "param_to": 35.0
+                            }
+                        }
+                    ],
+                    "additionalProperties": true,
+                    "required": [
+                        "SelectKBest",
+                        "ReliefF",
+                        "VarianceThreshold",
+                        "mutual_info",
+                        "fisher_score"
+                    ],
+                    "properties": {
+                        "SelectKBest": {
+                            "$id": "#/properties/config/properties/selectors/properties/SelectKBest",
+                            "type": "object",
+                            "title": "The Selectkbest Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "K_from": 10.0,
+                                    "K_to": 35.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "K_from",
+                                "K_to"
+                            ],
+                            "properties": {
+                                "K_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/SelectKBest/properties/K_from",
+                                    "type": "integer",
+                                    "title": "The K_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10.0
+                                    ]
+                                },
+                                "K_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/SelectKBest/properties/K_to",
+                                    "type": "integer",
+                                    "title": "The K_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        35.0
+                                    ]
+                                }
+                            }
+                        },
+                        "ReliefF": {
+                            "$id": "#/properties/config/properties/selectors/properties/ReliefF",
+                            "type": "object",
+                            "title": "The Relieff Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "n_features_to_select_to": 35.0,
+                                    "n_neighbors_from": 1.0,
+                                    "n_neighbors_to": 3.0,
+                                    "n_features_to_select_from": 10.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "n_neighbors_from",
+                                "n_neighbors_to",
+                                "n_features_to_select_from",
+                                "n_features_to_select_to"
+                            ],
+                            "properties": {
+                                "n_neighbors_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/ReliefF/properties/n_neighbors_from",
+                                    "type": "integer",
+                                    "title": "The N_neighbors_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1.0
+                                    ]
+                                },
+                                "n_neighbors_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/ReliefF/properties/n_neighbors_to",
+                                    "type": "integer",
+                                    "title": "The N_neighbors_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        3.0
+                                    ]
+                                },
+                                "n_features_to_select_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/ReliefF/properties/n_features_to_select_from",
+                                    "type": "integer",
+                                    "title": "The N_features_to_select_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10.0
+                                    ]
+                                },
+                                "n_features_to_select_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/ReliefF/properties/n_features_to_select_to",
+                                    "type": "integer",
+                                    "title": "The N_features_to_select_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        35.0
+                                    ]
+                                }
+                            }
+                        },
+                        "VarianceThreshold": {
+                            "$id": "#/properties/config/properties/selectors/properties/VarianceThreshold",
+                            "type": "object",
+                            "title": "The Variancethreshold Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "threshold_from": 0.1,
+                                    "threshold_to": 0.9
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "threshold_from",
+                                "threshold_to"
+                            ],
+                            "properties": {
+                                "threshold_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/VarianceThreshold/properties/threshold_from",
+                                    "type": "number",
+                                    "title": "The Threshold_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        0.1
+                                    ]
+                                },
+                                "threshold_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/VarianceThreshold/properties/threshold_to",
+                                    "type": "number",
+                                    "title": "The Threshold_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        0.9
+                                    ]
+                                }
+                            }
+                        },
+                        "mutual_info": {
+                            "$id": "#/properties/config/properties/selectors/properties/mutual_info",
+                            "type": "object",
+                            "title": "The Mutual_info Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "param_to": 35.0,
+                                    "param_from": 10.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "param_from",
+                                "param_to"
+                            ],
+                            "properties": {
+                                "param_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/mutual_info/properties/param_from",
+                                    "type": "integer",
+                                    "title": "The Param_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10.0
+                                    ]
+                                },
+                                "param_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/mutual_info/properties/param_to",
+                                    "type": "integer",
+                                    "title": "The Param_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        35.0
+                                    ]
+                                }
+                            }
+                        },
+                        "fisher_score": {
+                            "$id": "#/properties/config/properties/selectors/properties/fisher_score",
+                            "type": "object",
+                            "title": "The Fisher_score Schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "param_from": 10.0,
+                                    "param_to": 35.0
+                                }
+                            ],
+                            "additionalProperties": true,
+                            "required": [
+                                "param_from",
+                                "param_to"
+                            ],
+                            "properties": {
+                                "param_from": {
+                                    "$id": "#/properties/config/properties/selectors/properties/fisher_score/properties/param_from",
+                                    "type": "integer",
+                                    "title": "The Param_from Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10.0
+                                    ]
+                                },
+                                "param_to": {
+                                    "$id": "#/properties/config/properties/selectors/properties/fisher_score/properties/param_to",
+                                    "type": "integer",
+                                    "title": "The Param_to Schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        35.0
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

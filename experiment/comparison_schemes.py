@@ -109,7 +109,7 @@ def nested_cross_validation(
     if selector != "No_feature_selection":
         features = best_model.named_steps[selector]
         if selector == "ReliefF" or selector == "MultiSURF":
-            f = get_selected_features_reflieff(
+            f = get_selected_features_relieff(
                 features.top_features_,
                 columns_names,
                 features.n_features_to_select,
@@ -177,7 +177,7 @@ def get_selected_features(selector_array, features_list):
     return selected_features
 
 
-def get_selected_features_reflieff(selector_array, features_list, num):
+def get_selected_features_relieff(selector_array, features_list, num):
     selected_features = []
     for i, val in enumerate(selector_array):
         if i < num:

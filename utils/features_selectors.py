@@ -94,22 +94,3 @@ def get_features_selectors(config):
     f_list["No feature selection"] = ("No_feature_selection", None), None
 
     return f_list
-
-
-# from sklearn.svm import SVR
-# f_list['multi_SURF'] = (MultiSURF.__name__, MultiSURF()), multi_surf_param
-#  f_list['SelectFromModel'] = (SelectFromModel.__name__, SelectFromModel(
-#     multi_surf_param = {
-#         "MultiSURF__n_features_to_select": sp_randint(
-#             config["config"]["selectors"]["MultiSURF"][
-#                 "n_features_to_select_from"
-#             ],
-#             config["config"]["selectors"]["MultiSURF"][
-#                 "n_features_to_select_to"
-#             ],
-#         )
-#     }
-#      LassoCV())), {}}
-#  f_list['rfecv'] = (RFECV.__name__, RFECV(SVR(kernel="linear"))), \
-#                    {}}
-# from sklearn.linear_model import LassoCV
