@@ -17,6 +17,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import numpy
 from pandas import DataFrame
 
 from sklearn.pipeline import Pipeline
@@ -33,8 +34,14 @@ def experiment(config, verbose=1):
     # The number of times each experiment is repeated with a different
     # random seed.
     random_state = config["config"]["SEED"]
+    # setting the random seed globally to reproduce the results, setting
+    # this value in the RandomizedSearchCV will did not provide that,
+    # number of jobs should be 1 to get the exact results each time
+    numpy.random.seed(random_state)
     # The number of hyper-parameter configurations to try evaluating.
     MAX_EVALS = config["config"]["MAX_EVALS"]
+    # N_Jobs for parallelisation
+    n_jobs = config["config"]["N_JOBS"]
     # Read from the CSV file that contains the features and the response.
     X, y, columns_names = read_Xy_data(config["config"]["features_file"])
 
@@ -73,7 +80,8 @@ def experiment(config, verbose=1):
             y=y,
             columns_names=columns_names,
             df=scores_df,
-            verbose=verbose
+            verbose=verbose,
+            n_jobs=n_jobs,
         )
     plot_heat_map(scores_df, config, verbose)
     return scores_df

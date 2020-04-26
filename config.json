@@ -5,6 +5,7 @@
           "CV": 5,
           "SEED": 123,
           "MAX_EVALS": 80,
+          "N_JOBS": 1,
           "classifications":
           {
           "Ridge": {

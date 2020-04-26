@@ -45,6 +45,7 @@
                     "CV": 5.0,
                     "output_dir": "c:\\tmp\\",
                     "MAX_EVALS": 40.0,
+                    "N_JOBS": 1,
                     "classifications": {
                         "LGBM": {
                             "num_leaves_to": 20.0,
@@ -78,6 +79,7 @@
                 "CV",
                 "SEED",
                 "MAX_EVALS",
+                "N_JOBS",
                 "classifications",
                 "selectors"
             ],
@@ -133,6 +135,17 @@
                     "default": 80,
                     "examples": [
                         40.0
+                    ]
+                },
+                "N_JOBS": {
+                    "$id": "#/properties/config/properties/N_JOBS",
+                    "type": "integer",
+                    "minimum": -1,
+                    "title": "The N_JOBS Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 1,
+                    "examples": [
+                        2
                     ]
                 },
                 "classifications": {

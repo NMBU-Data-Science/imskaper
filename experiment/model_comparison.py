@@ -35,6 +35,7 @@ def model_comparison_experiment(
     random_state: int = 0,
     path_final_results: str = None,
     verbose: int = 1,
+    n_jobs: int = 1,
 ):
     """
     Compare model performances with optional feature selection.
@@ -80,7 +81,8 @@ def model_comparison_experiment(
             path_tmp_results=path_tmp_results,
             df=df,
             selector=selector,
-            verbose=verbose
+            verbose=verbose,
+            n_jobs=n_jobs,
         )
         results.append(result)
     if verbose > 0:

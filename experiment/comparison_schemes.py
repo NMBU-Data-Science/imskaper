@@ -40,6 +40,7 @@ def nested_cross_validation(
     verbose: int = 1,
     random_state=None,
     path_tmp_results: str = None,
+    n_jobs: int = 1,
 ):
     """
     Nested cross-validtion model comparison.
@@ -60,6 +61,7 @@ def nested_cross_validation(
         max_evals:
         verbose:
         path_tmp_results: Reference to preliminary experimental results.
+        n_jobs:
 
     Returns:
         (dict):
@@ -83,13 +85,17 @@ def nested_cross_validation(
         print(f"Running experiment {random_state} with {experiment_id}")
 
     # Set random state for the model.
-    model.random_state = random_state
+    # model.random_state = random_state
 
     # Record model training and validation performance.
 
     selected_features = ""
     # Set the number of workers to use for parallelisation.
-    n_jobs = cpu_count() - 1 if cpu_count() > 1 else 1
+    if n_jobs > cpu_count():
+        n_jobs = cpu_count()
+    elif n_jobs == 0:
+        n_jobs = 1
+    # n_jobs = cpu_count() - 1 if cpu_count() > 1 else 1
     # Find optimal hyper-parameters with K-folds.
     optimizer = RandomizedSearchCV(
         estimator=model,
@@ -97,7 +103,6 @@ def nested_cross_validation(
         n_iter=max_evals,
         scoring=score_func,
         cv=cv,
-        random_state=random_state,
         return_train_score=True,
         n_jobs=n_jobs,
     )

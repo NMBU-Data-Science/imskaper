@@ -31,4 +31,10 @@ def test_exp():
     assert df.shape == (len(get_classifiers(config)),
                         len(get_features_selectors(config)))
     assert len([f for f in os.listdir(p)]) == 7
+    df2 = experiment(config, verbose=0)
+    # Make sure we are able to reproduce the results when using the same seed
+    assert df.equals(df2)
+    config["config"]["SEED"] = 999
+    df3 = experiment(config, verbose=0)
+    assert not (df.equals(df3))
 
