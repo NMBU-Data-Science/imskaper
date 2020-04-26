@@ -5,7 +5,7 @@ import os.path
 from jsonschema.exceptions import ValidationError
 
 path = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "..", "config.json"
+    os.path.dirname(os.path.abspath(__file__)), "test_config.json"
 )
 with open(path) as config_file:
     config = json.load(config_file)

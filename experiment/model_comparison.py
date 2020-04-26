@@ -34,6 +34,7 @@ def model_comparison_experiment(
     selector: str,
     random_state: int = 0,
     path_final_results: str = None,
+    verbose: int = 1,
 ):
     """
     Compare model performances with optional feature selection.
@@ -52,6 +53,7 @@ def model_comparison_experiment(
         random_state: random state value
         n_jobs: number of cpu units used for processing
         path_final_results: output directory
+        verbose:
 
     """
     # Setup temporary directory to store preliminary results.
@@ -78,9 +80,11 @@ def model_comparison_experiment(
             path_tmp_results=path_tmp_results,
             df=df,
             selector=selector,
+            verbose=verbose
         )
         results.append(result)
-    print(df)
+    if verbose > 0:
+        print(df)
     # Remove temporary directory.
     ioutil.teardown_tempdir(path_tmp_results)
     # Write final results to disk.

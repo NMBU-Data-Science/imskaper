@@ -27,7 +27,7 @@ from utils import features_selectors
 from utils import classifiers
 
 
-def experiment(config):
+def experiment(config, verbose=1):
     # The number cross-validation folds.
     CV = config["config"]["CV"]
     # The number of times each experiment is repeated with a different
@@ -39,14 +39,14 @@ def experiment(config):
     X, y, columns_names = read_Xy_data(config["config"]["features_file"])
 
     # Get lists of feature selectors and classifier to be used in the pipeline.
-    f_list = features_selectors.get_features_selectors(config)
-    c_list = classifiers.get_classifiers(config)
+    feature_list = features_selectors.get_features_selectors(config)
+    classifier_list = classifiers.get_classifiers(config)
 
     # df to store the results for the final graph of the cross-validation.
     scores_df = DataFrame(dtype="float")
 
     # Loop over the feature selectors.
-    for feature_selector_k, feature_selector_v in f_list.items():
+    for feature_selector_k, feature_selector_v in feature_list.items():
         path_to_results = Path(
             config["config"]["output_dir"],
             "results_"
@@ -57,7 +57,7 @@ def experiment(config):
 
         # Loop over the classifiers and prepare the pipelines
         models, hparams = get_models(
-            feature_selector_k, feature_selector_v, c_list
+            feature_selector_k, feature_selector_v, classifier_list
         )
 
         scores_df = model_comparison_experiment(
@@ -73,9 +73,10 @@ def experiment(config):
             y=y,
             columns_names=columns_names,
             df=scores_df,
+            verbose=verbose
         )
-
-    plot_heat_map(scores_df, config)
+    plot_heat_map(scores_df, config, verbose)
+    return scores_df
 
 
 def merge_dict(dict1, dict2):
@@ -84,7 +85,7 @@ def merge_dict(dict1, dict2):
     return merged
 
 
-def plot_heat_map(scores_df, config):
+def plot_heat_map(scores_df, config, verbose):
     # Plot a heat-map of the scores obtained from the various feature
     # selectors and classifiers.
     sns.heatmap(scores_df.transpose() * 100, annot=True, fmt=".1f")
@@ -97,7 +98,8 @@ def plot_heat_map(scores_df, config):
         "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".jpg")
     plt.savefig(path_to_image, dpi=200)
-    plt.show()
+    if verbose > 0:
+        plt.show()
 
 
 def read_Xy_data(file):
