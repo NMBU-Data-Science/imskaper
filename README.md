@@ -37,7 +37,7 @@ Go through this quick tutorial for more information: [https://www.digitalcitizen
 
 After installing the project requirements, you should be able to run both the classifications and the features extraction tools.
 
-# Features Extraction:
+## Features Extraction:
 
 For features extraction, use the command prompt and navigate to the following folder:
 
@@ -63,7 +63,7 @@ modify the template.csv file
 - Additional parameters can be provided for advanced settings:
 ![Run feature extraction](imgs/feature_extraction_additional_param.png)
 
-# Features selection and classifications:
+## Features selection and classifications:
 
 This tool tests random combinations of hyperparameters specified in a json file, and provide you with the following heatmap, which can help you in selecting the optimal features selector and classifier for your problem:
 ![Run feature extraction](imgs/output_sample.jpg)

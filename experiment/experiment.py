@@ -36,13 +36,7 @@ def experiment(config):
     # The number of hyper-parameter configurations to try evaluating.
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # Read from the CSV file that contains the features and the response.
-    X_y = pd.read_csv(config["config"]["features_file"])
-    # Store column names to be used to get selected features.
-    columns_names = X_y.columns.tolist()
-    # the response y should be the last field in the dataset csv file.
-    X = X_y.iloc[:, : X_y.shape[1] - 1].values
-    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
-    y = y.reshape(-1)
+    X, y, columns_names = read_Xy_data(config["config"]["features_file"])
 
     scalar = (StandardScaler.__name__, StandardScaler())
     # Get lists of feature selectors and classifier to be used in the pipeline.
@@ -112,3 +106,14 @@ def plot_heat_map(scores_df, config):
     ).with_suffix(".jpg")
     plt.savefig(path_to_image, dpi=200)
     plt.show()
+
+
+def read_Xy_data(file):
+    X_y = pd.read_csv(file)
+    # Store column names to be used to get selected features.
+    columns_names = X_y.columns.tolist()
+    # the response y should be the last field in the dataset csv file.
+    X = X_y.iloc[:, : X_y.shape[1] - 1].values
+    y = X_y.iloc[:, X_y.shape[1] - 1 :].values
+    y = y.reshape(-1)
+    return X, y, columns_names
