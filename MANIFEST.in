@@ -1,0 +1,3 @@
+include validations/schema.json
+include tests/temp
+include tests/test_dataset.csv
