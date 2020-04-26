@@ -38,35 +38,27 @@ def experiment(config):
     # Read from the CSV file that contains the features and the response.
     X, y, columns_names = read_Xy_data(config["config"]["features_file"])
 
-    scalar = (StandardScaler.__name__, StandardScaler())
     # Get lists of feature selectors and classifier to be used in the pipeline.
     f_list = features_selectors.get_features_selectors(config)
     c_list = classifiers.get_classifiers(config)
 
-    # df to store the results for the final graph of the corss-validation.
+    # df to store the results for the final graph of the cross-validation.
     scores_df = DataFrame(dtype="float")
 
     # Loop over the feature selectors.
-    for f_k, f_v in f_list.items():
+    for feature_selector_k, feature_selector_v in f_list.items():
         path_to_results = Path(
             config["config"]["output_dir"],
-            "results_" + f_v[0][0] + "_" + str(time.strftime("%Y%m%d-%H%M%S")),
+            "results_"
+            + feature_selector_v[0][0]
+            + "_"
+            + str(time.strftime("%Y%m%d-%H%M%S")),
         ).with_suffix(".csv")
 
-        models = dict()
-        hparams = dict()
-        # Loop over the classifications algorithms.
-        for k, v in c_list.items():
-            if f_k == "No feature selection":
-                models[k] = Pipeline([scalar, v[0]])
-                hparams[k] = v[1]
-            else:
-                # We should not scale the data before VarianceThreshold
-                if f_v[0][0] == "VarianceThreshold":
-                    models[k] = Pipeline([f_v[0], scalar, v[0]])
-                else:
-                    models[k] = Pipeline([scalar, f_v[0], v[0]])
-                hparams[k] = merge_dict(v[1], f_v[1])
+        # Loop over the classifiers and prepare the pipelines
+        models, hparams = get_models(
+            feature_selector_k, feature_selector_v, c_list
+        )
 
         scores_df = model_comparison_experiment(
             models=models,
@@ -75,7 +67,7 @@ def experiment(config):
             random_state=random_state,
             score_func="roc_auc",
             max_evals=MAX_EVALS,
-            selector=f_v[0][0],
+            selector=feature_selector_v[0][0],
             cv=CV,
             X=X,
             y=y,
@@ -117,3 +109,28 @@ def read_Xy_data(file):
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values
     y = y.reshape(-1)
     return X, y, columns_names
+
+
+def get_models(feature_selector_k, feature_selector_v, classifiers_list):
+    # Loop over the classifications algorithms.
+    scalar = (StandardScaler.__name__, StandardScaler())
+    models = dict()
+    hparams = dict()
+    for classifier_k, classifier_v in classifiers_list.items():
+        if feature_selector_k == "No feature selection":
+            models[classifier_k] = Pipeline([scalar, classifier_v[0]])
+            hparams[classifier_k] = classifier_v[1]
+        else:
+            # We should not scale the data before VarianceThreshold
+            if feature_selector_v[0][0] == "VarianceThreshold":
+                models[classifier_k] = Pipeline(
+                    [feature_selector_v[0], scalar, classifier_v[0]]
+                )
+            else:
+                models[classifier_k] = Pipeline(
+                    [scalar, feature_selector_v[0], classifier_v[0]]
+                )
+            hparams[classifier_k] = merge_dict(
+                classifier_v[1], feature_selector_v[1]
+            )
+    return models, hparams
