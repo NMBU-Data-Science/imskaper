@@ -120,19 +120,29 @@ def nested_cross_validation(
                 columns_names,
                 features.n_features_to_select,
             )
-            extras = "feature_importance: " + str(
-                features.feature_importances_).strip('[]')
+            extras = "feature_importance: " + append_feature_name(
+                features.feature_importances_, columns_names)
         else:
-            selected_features = get_feature_names(features.get_support(),
-                                                  columns_names)
+            if selector == "fisher_score":
+                selected_features = get_feature_names(
+                    features.get_support(), columns_names)
+            else:
+                selected_features = get_feature_names(features.get_support(),
+                                                      columns_names)
 
             if selector == "VarianceThreshold":
-                extras = "feature_variances: " + str(
-                    features.variances_).strip('[]')
+                extras = "feature_variances: " + append_feature_name(
+                    features.variances_, columns_names)
+            elif selector == "fisher_score":
+                pass
+                # print(features.get_support())
+                # print(features.scores_)
+                # print(features.pvalues_)
+                # extras = "features (sorted): " + get_sorted_features(
+                #     features.scores_, columns_names)
             else:
-                extras = "feature_scores (sorted): " + get_feature_names(
+                extras = "feature_scores: " + append_feature_name(
                     features.scores_, columns_names)
-
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
 
@@ -200,3 +210,10 @@ def get_selected_features_relieff(selector_array, features_list, num):
             selected_features.append(features_list[val])
 
     return ", ".join(selected_features)
+
+
+def append_feature_name(score_array, features_list):
+    new_list = []
+    for i, val in enumerate(score_array):
+        new_list.append(features_list[i]+":"+str(val))
+    return ", ".join(new_list)
