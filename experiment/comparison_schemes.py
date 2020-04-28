@@ -90,6 +90,7 @@ def nested_cross_validation(
     # Record model training and validation performance.
 
     selected_features = ""
+    extras = ""
     # Set the number of workers to use for parallelisation.
     if n_jobs > cpu_count():
         n_jobs = cpu_count()
@@ -114,15 +115,23 @@ def nested_cross_validation(
     if selector != "No_feature_selection":
         features = best_model.named_steps[selector]
         if selector == "ReliefF" or selector == "MultiSURF":
-            f = get_selected_features_relieff(
+            selected_features = get_selected_features_relieff(
                 features.top_features_,
                 columns_names,
                 features.n_features_to_select,
             )
-            selected_features += ", ".join(f)
+            extras = "feature_importance: " + str(
+                features.feature_importances_).strip('[]')
         else:
-            f = get_selected_features(features.get_support(), columns_names)
-            selected_features += ", ".join(f)
+            selected_features = get_feature_names(features.get_support(),
+                                                  columns_names)
+
+            if selector == "VarianceThreshold":
+                extras = "feature_variances: " + str(
+                    features.variances_).strip('[]')
+            else:
+                extras = "feature_scores (sorted): " + get_feature_names(
+                    features.scores_, columns_names)
 
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
@@ -154,6 +163,8 @@ def nested_cross_validation(
                     ),
                 ),
                 ("selected features ", selected_features.replace("\n", ""),),
+                ("features scores/importance ", extras.replace(
+                    "\n", ""),),
             ]
         )
     )
@@ -174,12 +185,12 @@ def nested_cross_validation(
     return output, df
 
 
-def get_selected_features(selector_array, features_list):
+def get_feature_names(selector_array, features_list):
     selected_features = []
     for i, val in enumerate(selector_array):
         if val:
             selected_features.append(features_list[i])
-    return selected_features
+    return ", ".join(selected_features)
 
 
 def get_selected_features_relieff(selector_array, features_list, num):
@@ -188,4 +199,4 @@ def get_selected_features_relieff(selector_array, features_list, num):
         if i < num:
             selected_features.append(features_list[val])
 
-    return selected_features
+    return ", ".join(selected_features)
