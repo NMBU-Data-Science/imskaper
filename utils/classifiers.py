@@ -53,8 +53,8 @@ def get_classifiers(config):
     )
     # lgbm_param["LGBMClassifier__lambda_l1"] = sp_randint(1, 3)
     svc_param["SVC__C"] = sp_randint(
-        config["config"]["classifications"]["CVS"]["C_from"],
-        config["config"]["classifications"]["CVS"]["C_to"],
+        config["config"]["classifications"]["SVC"]["C_from"],
+        config["config"]["classifications"]["SVC"]["C_to"],
     )
 
     # dt_param["DecisionTreeClassifier__ccp_alpha"] = sp_randint(1, 2)

@@ -114,6 +114,7 @@ def read_Xy_data(file):
     X_y = pd.read_csv(file)
     # Store column names to be used to get selected features.
     columns_names = X_y.columns.tolist()
+    columns_names.pop()
     # the response y should be the last field in the dataset csv file.
     X = X_y.iloc[:, : X_y.shape[1] - 1].values
     y = X_y.iloc[:, X_y.shape[1] - 1 :].values

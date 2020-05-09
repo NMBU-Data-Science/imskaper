@@ -20,7 +20,7 @@
             "min_child_s_from": 2,
             "min_child_s_to": 5
           },
-          "CVS": {
+          "SVC": {
             "C_from": 1,
             "C_to": 5
           },
