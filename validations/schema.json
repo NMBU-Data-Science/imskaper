@@ -59,7 +59,7 @@
                             "alpha_from": 1.0,
                             "alpha_to": 5.0
                         },
-                        "CVS": {
+                        "SVC": {
                             "C_to": 5.0,
                             "C_from": 1.0
                         },
@@ -168,7 +168,7 @@
                                 "alpha_from": 1.0,
                                 "alpha_to": 5.0
                             },
-                            "CVS": {
+                            "SVC": {
                                 "C_to": 5.0,
                                 "C_from": 1.0
                             },
@@ -182,7 +182,7 @@
                     "required": [
                         "Ridge",
                         "LGBM",
-                        "CVS",
+                        "SVC",
                         "LR"
                     ],
                     "properties": {
@@ -314,10 +314,10 @@
                                 }
                             }
                         },
-                        "CVS": {
-                            "$id": "#/properties/config/properties/classifications/properties/CVS",
+                        "SVC": {
+                            "$id": "#/properties/config/properties/classifications/properties/SVC",
                             "type": "object",
-                            "title": "The Cvs Schema",
+                            "title": "The SVC Schema",
                             "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
@@ -333,7 +333,7 @@
                             ],
                             "properties": {
                                 "C_from": {
-                                    "$id": "#/properties/config/properties/classifications/properties/CVS/properties/C_from",
+                                    "$id": "#/properties/config/properties/classifications/properties/SVC/properties/C_from",
                                     "type": "integer",
                                     "title": "The C_from Schema",
                                     "description": "An explanation about the purpose of this instance.",
@@ -343,7 +343,7 @@
                                     ]
                                 },
                                 "C_to": {
-                                    "$id": "#/properties/config/properties/classifications/properties/CVS/properties/C_to",
+                                    "$id": "#/properties/config/properties/classifications/properties/SVC/properties/C_to",
                                     "type": "integer",
                                     "title": "The C_to Schema",
                                     "description": "An explanation about the purpose of this instance.",
