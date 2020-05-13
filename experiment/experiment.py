@@ -42,6 +42,8 @@ def experiment(config, verbose=1):
     MAX_EVALS = config["config"]["MAX_EVALS"]
     # N_Jobs for parallelisation
     n_jobs = config["config"]["N_JOBS"]
+    # Score function
+    score_fun = config["config"]["SCORE_FUN"]
     # Read from the CSV file that contains the features and the response.
     X, y, columns_names = read_Xy_data(config["config"]["features_file"])
 
@@ -72,7 +74,7 @@ def experiment(config, verbose=1):
             hparams=hparams,
             path_final_results=path_to_results,
             random_state=random_state,
-            score_func="roc_auc",
+            score_func=score_fun,
             max_evals=MAX_EVALS,
             selector=feature_selector_v[0][0],
             cv=CV,
@@ -99,7 +101,7 @@ def plot_heat_map(scores_df, config, verbose):
     sns.heatmap(scores_df.transpose() * 100, annot=True, fmt=".1f")
     plt.xlabel("Classification Algorithms")
     plt.ylabel("Feature Selection Algorithms")
-    plt.title("AUC", x=1.1, y=1.1)
+    plt.title(config["config"]["SCORE_FUN"], x=1.1, y=1.1)
     plt.tight_layout()
     path_to_image = Path(
         config["config"]["output_dir"],

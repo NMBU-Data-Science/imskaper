@@ -44,6 +44,7 @@
                     },
                     "CV": 5.0,
                     "output_dir": "c:\\tmp\\",
+                    "SCORE_FUN":"roc_auc",
                     "MAX_EVALS": 40.0,
                     "N_JOBS": 1,
                     "classifications": {
@@ -76,6 +77,7 @@
             "required": [
                 "features_file",
                 "output_dir",
+                "SCORE_FUN",
                 "CV",
                 "SEED",
                 "MAX_EVALS",
@@ -102,6 +104,16 @@
                     "default": "",
                     "examples": [
                         "c:\\tmp\\"
+                    ]
+                },
+                "SCORE_FUN": {
+                    "$id": "#/properties/config/properties/SCORE_FUN",
+                    "type": "string",
+                    "title": "The SCORE_FUN Schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "roc_auc",
+                    "examples": [
+                        "roc_auc"
                     ]
                 },
                 "CV": {
