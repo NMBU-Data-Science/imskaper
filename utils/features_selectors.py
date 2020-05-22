@@ -13,7 +13,6 @@ __email__ = "ahmed.albuni@gmail.com"
 
 from scipy.stats import uniform as sp_uniform
 from sklearn.feature_selection import (
-    SelectKBest,
     mutual_info_classif,
     GenericUnivariateSelect,
     VarianceThreshold,
@@ -25,12 +24,6 @@ from skfeature.function.similarity_based.fisher_score import fisher_score
 
 def get_features_selectors(config):
 
-    k_best_param = {
-        "SelectKBest__k": sp_randint(
-            config["config"]["selectors"]["SelectKBest"]["K_from"],
-            config["config"]["selectors"]["SelectKBest"]["K_to"],
-        )
-    }
     relieff_param = {
         "ReliefF__n_neighbors": sp_randint(
             config["config"]["selectors"]["ReliefF"]["n_neighbors_from"],
@@ -66,10 +59,7 @@ def get_features_selectors(config):
         )
     }
     f_list = dict()
-    f_list["select_k_best"] = (
-        (SelectKBest.__name__, SelectKBest(mutual_info_classif)),
-        k_best_param,
-    )
+
     f_list["relief_f"] = (ReliefF.__name__, ReliefF()), relieff_param
 
     f_list["mutual_info"] = (
