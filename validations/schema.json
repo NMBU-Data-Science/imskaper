@@ -63,6 +63,19 @@
                         "LR": {
                             "C_from": 1.0,
                             "C_to": 2.0
+                        },
+                        "DT": {
+                            "min_samples_leaf_from": 1,
+                            "min_samples_leaf_to": 10,
+                            "max_depth_list": [
+                                10,
+                                20,
+                                50
+                            ]
+                        },
+                        "ET": {
+                            "min_samples_leaf_from": 1,
+                            "min_samples_leaf_to": 10
                         }
                     },
                     "features_file": "c:\\tmp\\Set1_T2.csv",
@@ -183,6 +196,19 @@
                             "LR": {
                                 "C_from": 1.0,
                                 "C_to": 2.0
+                            },
+                            "DT": {
+                                "min_samples_leaf_from": 1,
+                                "min_samples_leaf_to": 10,
+                                "max_depth_list": [
+                                    10,
+                                    20,
+                                    50
+                                ]
+                            },
+                            "ET": {
+                                "min_samples_leaf_from": 1,
+                                "min_samples_leaf_to": 10
                             }
                         }
                     ],
@@ -191,7 +217,9 @@
                         "Ridge",
                         "LGBM",
                         "SVC",
-                        "LR"
+                        "LR",
+                        "DT",
+                        "ET"
                     ],
                     "properties": {
                         "Ridge": {
@@ -398,6 +426,122 @@
                                     "default": 0,
                                     "examples": [
                                         2.0
+                                    ]
+                                }
+                            }
+                        },
+                        "DT": {
+                            "$id": "#/properties/config/properties/DT",
+                            "type": "object",
+                            "title": "The DT schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "min_samples_leaf_from": 1,
+                                    "min_samples_leaf_to": 10,
+                                    "max_depth_list": [
+                                        10,
+                                        20,
+                                        50
+                                    ]
+                                }
+                            ],
+                            "required": [
+                                "min_samples_leaf_from",
+                                "min_samples_leaf_to",
+                                "max_depth_list"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "min_samples_leaf_from": {
+                                    "$id": "#/properties/config/properties/DT/properties/min_samples_leaf_from",
+                                    "type": "integer",
+                                    "title": "The min_samples_leaf_from schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1
+                                    ]
+                                },
+                                "min_samples_leaf_to": {
+                                    "$id": "#/properties/config/properties/DT/properties/min_samples_leaf_to",
+                                    "type": "integer",
+                                    "title": "The min_samples_leaf_to schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10
+                                    ]
+                                },
+                                "max_depth_list": {
+                                    "$id": "#/properties/config/properties/DT/properties/max_depth_list",
+                                    "type": "array",
+                                    "title": "The max_depth_list schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": [],
+                                    "examples": [
+                                        [
+                                            10,
+                                            20
+                                        ]
+                                    ],
+                                    "additionalItems": true,
+                                    "items": {
+                                        "anyOf": [
+                                            {
+                                                "$id": "#/properties/config/properties/DT/properties/max_depth_list/items/anyOf/0",
+                                                "type": "integer",
+                                                "title": "The first anyOf schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": 0,
+                                                "examples": [
+                                                    10,
+                                                    20
+                                                ]
+                                            }
+                                        ],
+                                        "$id": "#/properties/config/properties/DT/properties/max_depth_list/items"
+                                    }
+                                }
+                            }
+                        },
+                        "ET": {
+                            "$id": "#/properties/config/properties/ET",
+                            "type": "object",
+                            "title": "The ET schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "min_samples_leaf_from": 1,
+                                    "min_samples_leaf_to": 10
+                                }
+                            ],
+                            "required": [
+                                "min_samples_leaf_from",
+                                "min_samples_leaf_to"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "min_samples_leaf_from": {
+                                    "$id": "#/properties/config/properties/ET/properties/min_samples_leaf_from",
+                                    "type": "integer",
+                                    "title": "The min_samples_leaf_from schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        1
+                                    ]
+                                },
+                                "min_samples_leaf_to": {
+                                    "$id": "#/properties/config/properties/ET/properties/min_samples_leaf_to",
+                                    "type": "integer",
+                                    "title": "The min_samples_leaf_to schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": 0,
+                                    "examples": [
+                                        10
                                     ]
                                 }
                             }
