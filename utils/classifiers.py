@@ -46,26 +46,34 @@ def get_classifiers(config):
         config["config"]["classifications"]["LGBM"]["min_child_s_from"],
         config["config"]["classifications"]["LGBM"]["min_child_s_to"],
     )
-    # lgbm_param["LGBMClassifier__min_data_in_bin"] = sp_randint(5, 7)
+
     lgbm_param["LGBMClassifier__num_leaves"] = sp_randint(
         config["config"]["classifications"]["LGBM"]["num_leaves_from"],
         config["config"]["classifications"]["LGBM"]["num_leaves_to"],
     )
-    # lgbm_param["LGBMClassifier__lambda_l1"] = sp_randint(1, 3)
+
     svc_param["SVC__C"] = sp_randint(
         config["config"]["classifications"]["SVC"]["C_from"],
         config["config"]["classifications"]["SVC"]["C_to"],
     )
 
-    # dt_param["DecisionTreeClassifier__ccp_alpha"] = sp_randint(1, 2)
     lr_param["LogisticRegression__C"] = sp_randint(
         config["config"]["classifications"]["LR"]["C_from"],
         config["config"]["classifications"]["LR"]["C_to"],
     )
     et_param["ExtraTreesClassifier__criterion"] = ("gini", "entropy")
+    et_param["ExtraTreesClassifier__min_samples_leaf"] = sp_randint(
+        config["config"]["classifications"]["ET"]["min_samples_leaf_from"],
+        config["config"]["classifications"]["ET"]["min_samples_leaf_to"],
+    )
+
     dt_param["DecisionTreeClassifier__criterion"] = ("gini", "entropy")
-    dt_param["DecisionTreeClassifier__max_depth"] = (15, 20, None)
-    dt_param["DecisionTreeClassifier__min_samples_leaf"] = (1, 4)
+    dt_param["DecisionTreeClassifier__max_depth"] = \
+        config["config"]["classifications"]["DT"]["max_depth_list"]
+    dt_param["DecisionTreeClassifier__min_samples_leaf"] = sp_randint(
+        config["config"]["classifications"]["DT"]["min_samples_leaf_from"],
+        config["config"]["classifications"]["DT"]["min_samples_leaf_to"],
+    )
     classifiers = dict()
     classifiers["ridge"] = (
         (RidgeClassifier.__name__, RidgeClassifier()),

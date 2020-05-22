@@ -28,14 +28,19 @@
            "LR": {
             "C_from": 1,
             "C_to": 2
-          }
+          },
+            "DT": {
+              "min_samples_leaf_from": 1,
+              "min_samples_leaf_to": 10,
+              "max_depth_list": [10, 20, 50]
+            },
+            "ET": {
+              "min_samples_leaf_from": 1,
+              "min_samples_leaf_to": 10
+            }
         },
           "selectors":
             {
-              "SelectKBest": {
-                "K_from": 10,
-                "K_to": 35
-            },
               "ReliefF": {
                 "n_neighbors_from": 1,
                 "n_neighbors_to": 3,

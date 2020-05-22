@@ -31,10 +31,6 @@
                             "param_from": 10.0,
                             "param_to": 35.0
                         },
-                        "SelectKBest": {
-                            "K_from": 10.0,
-                            "K_to": 35.0
-                        },
                         "ReliefF": {
                             "n_neighbors_to": 3.0,
                             "n_features_to_select_from": 10.0,
@@ -420,10 +416,6 @@
                                 "param_from": 10.0,
                                 "param_to": 35.0
                             },
-                            "SelectKBest": {
-                                "K_from": 10.0,
-                                "K_to": 35.0
-                            },
                             "ReliefF": {
                                 "n_features_to_select_to": 35.0,
                                 "n_neighbors_from": 1.0,
@@ -442,53 +434,12 @@
                     ],
                     "additionalProperties": true,
                     "required": [
-                        "SelectKBest",
                         "ReliefF",
                         "VarianceThreshold",
                         "mutual_info",
                         "fisher_score"
                     ],
                     "properties": {
-                        "SelectKBest": {
-                            "$id": "#/properties/config/properties/selectors/properties/SelectKBest",
-                            "type": "object",
-                            "title": "The Selectkbest Schema",
-                            "description": "An explanation about the purpose of this instance.",
-                            "default": {},
-                            "examples": [
-                                {
-                                    "K_from": 10.0,
-                                    "K_to": 35.0
-                                }
-                            ],
-                            "additionalProperties": true,
-                            "required": [
-                                "K_from",
-                                "K_to"
-                            ],
-                            "properties": {
-                                "K_from": {
-                                    "$id": "#/properties/config/properties/selectors/properties/SelectKBest/properties/K_from",
-                                    "type": "integer",
-                                    "title": "The K_from Schema",
-                                    "description": "An explanation about the purpose of this instance.",
-                                    "default": 0,
-                                    "examples": [
-                                        10.0
-                                    ]
-                                },
-                                "K_to": {
-                                    "$id": "#/properties/config/properties/selectors/properties/SelectKBest/properties/K_to",
-                                    "type": "integer",
-                                    "title": "The K_to Schema",
-                                    "description": "An explanation about the purpose of this instance.",
-                                    "default": 0,
-                                    "examples": [
-                                        35.0
-                                    ]
-                                }
-                            }
-                        },
                         "ReliefF": {
                             "$id": "#/properties/config/properties/selectors/properties/ReliefF",
                             "type": "object",
