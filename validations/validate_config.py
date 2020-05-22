@@ -32,10 +32,12 @@ def validate_config_file(config):
         return False
     score_fun = config["config"]["SCORE_FUN"]
     if score_fun not in score_fun_list:
-        print("Score function: ", score_fun, "is not allowed\n", "Allowed "
-                                                                 "score "
-                                                                 "functions"
-                                                                 ": ",
-              score_fun_list)
+        print(
+            "Score function: ",
+            score_fun,
+            "is not allowed\n",
+            "Allowed " "score " "functions" ": ",
+            score_fun_list,
+        )
         return False
     return True

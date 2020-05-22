@@ -68,8 +68,9 @@ def get_classifiers(config):
     )
 
     dt_param["DecisionTreeClassifier__criterion"] = ("gini", "entropy")
-    dt_param["DecisionTreeClassifier__max_depth"] = \
-        config["config"]["classifications"]["DT"]["max_depth_list"]
+    dt_param["DecisionTreeClassifier__max_depth"] = config["config"][
+        "classifications"
+    ]["DT"]["max_depth_list"]
     dt_param["DecisionTreeClassifier__min_samples_leaf"] = sp_randint(
         config["config"]["classifications"]["DT"]["min_samples_leaf_from"],
         config["config"]["classifications"]["DT"]["min_samples_leaf_to"],

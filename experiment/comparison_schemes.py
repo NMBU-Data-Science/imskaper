@@ -121,18 +121,22 @@ def nested_cross_validation(
                 features.n_features_to_select,
             )
             extras = "feature_importance: " + append_feature_name(
-                features.feature_importances_, columns_names)
+                features.feature_importances_, columns_names
+            )
         else:
             if selector == "fisher_score":
                 selected_features = get_feature_names(
-                    features.get_support(), columns_names)
+                    features.get_support(), columns_names
+                )
             else:
-                selected_features = get_feature_names(features.get_support(),
-                                                      columns_names)
+                selected_features = get_feature_names(
+                    features.get_support(), columns_names
+                )
 
             if selector == "VarianceThreshold":
                 extras = "feature_variances: " + append_feature_name(
-                    features.variances_, columns_names)
+                    features.variances_, columns_names
+                )
             elif selector == "fisher_score":
                 pass
                 # print(features.get_support())
@@ -142,7 +146,8 @@ def nested_cross_validation(
                 #     features.scores_, columns_names)
             else:
                 extras = "feature_scores: " + append_feature_name(
-                    features.scores_, columns_names)
+                    features.scores_, columns_names
+                )
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
 
@@ -173,8 +178,7 @@ def nested_cross_validation(
                     ),
                 ),
                 ("selected features ", selected_features.replace("\n", ""),),
-                ("features scores/importance ", extras.replace(
-                    "\n", ""),),
+                ("features scores/importance ", extras.replace("\n", ""),),
             ]
         )
     )
@@ -215,5 +219,5 @@ def get_selected_features_relieff(selector_array, features_list, num):
 def append_feature_name(score_array, features_list):
     new_list = []
     for i, val in enumerate(score_array):
-        new_list.append(features_list[i]+":"+str(val))
+        new_list.append(features_list[i] + ":" + str(val))
     return ", ".join(new_list)
