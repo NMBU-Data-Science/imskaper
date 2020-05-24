@@ -6,6 +6,7 @@
           "SEED": 321,
           "MAX_EVALS": 1,
           "N_JOBS": 1,
+          "SCORE_FUN": "roc_auc",
           "classifications":
           {
           "Ridge": {
@@ -20,21 +21,26 @@
             "min_child_s_from": 2,
             "min_child_s_to": 5
           },
-          "CVS": {
+          "SVC": {
             "C_from": 1,
             "C_to": 5
           },
            "LR": {
             "C_from": 1,
             "C_to": 2
-          }
+          },
+            "DT": {
+              "min_samples_leaf_from": 1,
+              "min_samples_leaf_to": 10,
+              "max_depth_list": [10, 20, 50]
+            },
+            "ET": {
+              "min_samples_leaf_from": 1,
+              "min_samples_leaf_to": 10
+            }
         },
           "selectors":
             {
-              "SelectKBest": {
-                "K_from": 10,
-                "K_to": 15
-            },
               "ReliefF": {
                 "n_neighbors_from": 1,
                 "n_neighbors_to": 3,

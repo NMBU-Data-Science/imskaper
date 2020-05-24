@@ -106,7 +106,9 @@ def experiment(config, verbose=1):
     logger.info("Time elapsed: " + str(end_time - start_time))
     logger.info("JSON file used for configurations: ")
     logger.info(config)
+    logging.shutdown()
     plot_heat_map(scores_df, config, verbose, path)
+    return scores_df
 
 
 def merge_dict(dict1, dict2):
