@@ -26,9 +26,22 @@ from sklearn.preprocessing import StandardScaler
 from experiment.model_comparison import model_comparison_experiment
 from utils import features_selectors
 from utils import classifiers
+import logging
+import datetime
 
 
 def experiment(config, verbose=1):
+    path_to_log_file = Path(
+        config["config"]["output_dir"],
+        "log_" + str(time.strftime("%Y%m%d-%H%M%S")),
+    ).with_suffix(".log")
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger()
+    logger.addHandler(logging.FileHandler(path_to_log_file))
+
+    start_time = datetime.datetime.now()
+    logger.info("Process start time: " + str(start_time))
+
     # The number cross-validation folds.
     CV = config["config"]["CV"]
     # The number of times each experiment is repeated with a different
@@ -85,8 +98,13 @@ def experiment(config, verbose=1):
             verbose=verbose,
             n_jobs=n_jobs,
         )
+
+    end_time = datetime.datetime.now()
+    logger.info("Process end time: " + str(end_time))
+    logger.info("Time elapsed: " + str(end_time - start_time))
+    logger.info("JSON file used for configurations: ")
+    logger.info(config)
     plot_heat_map(scores_df, config, verbose)
-    return scores_df
 
 
 def merge_dict(dict1, dict2):
@@ -107,7 +125,12 @@ def plot_heat_map(scores_df, config, verbose):
         config["config"]["output_dir"],
         "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".jpg")
+    path_to_csv = Path(
+        config["config"]["output_dir"],
+        "heatmap_data_" + str(time.strftime("%Y%m%d-%H%M%S")),
+    ).with_suffix(".csv")
     plt.savefig(path_to_image, dpi=200)
+    scores_df.to_csv(path_to_csv)
     if verbose > 0:
         plt.show()
 

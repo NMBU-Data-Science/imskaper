@@ -9,8 +9,9 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.join(current_path, "test_config.json")
 with open(json_path) as config_file:
     config = json.load(config_file)
-config["config"]["features_file"] = os.path.join(current_path,
-                                                 "test_dataset.csv")
+config["config"]["features_file"] = os.path.join(
+    current_path, "test_dataset.csv"
+)
 config["config"]["output_dir"] = os.path.join(current_path, "temp")
 
 
@@ -28,8 +29,10 @@ def test_exp():
     for f in filesToRemove:
         os.remove(f)
     df = experiment(config, verbose=0)
-    assert df.shape == (len(get_classifiers(config)),
-                        len(get_features_selectors(config)))
+    assert df.shape == (
+        len(get_classifiers(config)),
+        len(get_features_selectors(config)),
+    )
     assert len([f for f in os.listdir(p)]) == 7
     df2 = experiment(config, verbose=0)
     # Make sure we are able to reproduce the results when using the same seed
@@ -37,4 +40,3 @@ def test_exp():
     config["config"]["SEED"] = 999
     df3 = experiment(config, verbose=0)
     assert not (df.equals(df3))
-
