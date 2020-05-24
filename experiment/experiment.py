@@ -28,12 +28,14 @@ from utils import features_selectors
 from utils import classifiers
 import logging
 import datetime
+import os
 
 
 def experiment(config, verbose=1):
+    path = config["config"]["output_dir"] + str(time.strftime("%Y%m%d-%H%M%S"))
+    os.mkdir(path)
     path_to_log_file = Path(
-        config["config"]["output_dir"],
-        "log_" + str(time.strftime("%Y%m%d-%H%M%S")),
+        path, "log_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".log")
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger()
@@ -70,7 +72,7 @@ def experiment(config, verbose=1):
     # Loop over the feature selectors.
     for feature_selector_k, feature_selector_v in feature_list.items():
         path_to_results = Path(
-            config["config"]["output_dir"],
+            path,
             "results_"
             + feature_selector_v[0][0]
             + "_"
@@ -104,7 +106,7 @@ def experiment(config, verbose=1):
     logger.info("Time elapsed: " + str(end_time - start_time))
     logger.info("JSON file used for configurations: ")
     logger.info(config)
-    plot_heat_map(scores_df, config, verbose)
+    plot_heat_map(scores_df, config, verbose, path)
 
 
 def merge_dict(dict1, dict2):
@@ -113,7 +115,7 @@ def merge_dict(dict1, dict2):
     return merged
 
 
-def plot_heat_map(scores_df, config, verbose):
+def plot_heat_map(scores_df, config, verbose, path):
     # Plot a heat-map of the scores obtained from the various feature
     # selectors and classifiers.
     sns.heatmap(scores_df.transpose() * 100, annot=True, fmt=".1f")
@@ -122,12 +124,10 @@ def plot_heat_map(scores_df, config, verbose):
     plt.title(config["config"]["SCORE_FUN"], x=1.1, y=1.1)
     plt.tight_layout()
     path_to_image = Path(
-        config["config"]["output_dir"],
-        "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
+        path, "image_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".jpg")
     path_to_csv = Path(
-        config["config"]["output_dir"],
-        "heatmap_data_" + str(time.strftime("%Y%m%d-%H%M%S")),
+        path, "heatmap_data_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".csv")
     plt.savefig(path_to_image, dpi=200)
     scores_df.to_csv(path_to_csv)
