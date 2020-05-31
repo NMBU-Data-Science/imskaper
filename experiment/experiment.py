@@ -22,6 +22,7 @@ from pandas import DataFrame
 
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from collections import Counter
 
 from experiment.model_comparison import model_comparison_experiment
 from utils import features_selectors
@@ -109,16 +110,15 @@ def experiment(config, verbose=1):
     logger.info("JSON file used for configurations: ")
     logger.info(config)
     logging.shutdown()
-    plot_heat_map(scores_df, config, verbose, path)
-    from collections import Counter
     counter_list = (Counter(all_selected_features)).most_common()
     counter_dict = dict(counter_list)
     path_to_features_freq_file = Path(
         path, "features_freq" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".csv")
-    with open(path_to_features_freq_file, 'w') as f:
+    with open(path_to_features_freq_file, "w") as f:
         for key in counter_dict.keys():
             f.write("%s,%s\n" % (key, counter_dict[key]))
+    plot_heat_map(scores_df, config, verbose, path)
 
     return scores_df
 
