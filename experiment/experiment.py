@@ -68,6 +68,7 @@ def experiment(config, verbose=1):
 
     # df to store the results for the final graph of the cross-validation.
     scores_df = DataFrame(dtype="float")
+    all_selected_features = list()
 
     # Loop over the feature selectors.
     for feature_selector_k, feature_selector_v in feature_list.items():
@@ -84,7 +85,7 @@ def experiment(config, verbose=1):
             feature_selector_k, feature_selector_v, classifier_list
         )
 
-        scores_df = model_comparison_experiment(
+        scores_df, selected_features = model_comparison_experiment(
             models=models,
             hparams=hparams,
             path_final_results=path_to_results,
@@ -100,6 +101,7 @@ def experiment(config, verbose=1):
             verbose=verbose,
             n_jobs=n_jobs,
         )
+        all_selected_features += selected_features
 
     end_time = datetime.datetime.now()
     logger.info("Process end time: " + str(end_time))
@@ -108,6 +110,16 @@ def experiment(config, verbose=1):
     logger.info(config)
     logging.shutdown()
     plot_heat_map(scores_df, config, verbose, path)
+    from collections import Counter
+    counter_list = (Counter(all_selected_features)).most_common()
+    counter_dict = dict(counter_list)
+    path_to_features_freq_file = Path(
+        path, "features_freq" + str(time.strftime("%Y%m%d-%H%M%S")),
+    ).with_suffix(".csv")
+    with open(path_to_features_freq_file, 'w') as f:
+        for key in counter_dict.keys():
+            f.write("%s,%s\n" % (key, counter_dict[key]))
+
     return scores_df
 
 

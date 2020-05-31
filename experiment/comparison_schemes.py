@@ -196,7 +196,7 @@ def nested_cross_validation(
             output["exp_duration"] = "{} days {:02d}:{:02d}:{:02d}".format(
                 days, hours, minutes, seconds
             )
-    return output, df
+    return output, df, selected_features.split(", ")
 
 
 def get_feature_names(selector_array, features_list):

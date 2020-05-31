@@ -62,12 +62,12 @@ def model_comparison_experiment(
 
     # Iterate through models and run experiments in parallel.
     results = []
+    all_selected_features = list()
     for model_name, model in tqdm(models.items()):
 
         # Get hyper-parameters for this model.
         model_hparams = hparams[model_name]
-
-        result, df = nested_cross_validation(
+        result, df, selected_features = nested_cross_validation(
             X=X,
             y=y,
             columns_names=columns_names,
@@ -85,10 +85,11 @@ def model_comparison_experiment(
             n_jobs=n_jobs,
         )
         results.append(result)
+        all_selected_features += selected_features
     if verbose > 0:
         print(df)
     # Remove temporary directory.
     ioutil.teardown_tempdir(path_tmp_results)
     # Write final results to disk.
     ioutil.write_final_results(path_final_results, results)
-    return df
+    return df, all_selected_features
