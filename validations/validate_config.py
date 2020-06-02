@@ -20,7 +20,10 @@ import os.path
 path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.json")
 with open(path) as config_file:
     schema = json.load(config_file)
-score_fun_list = ("f1", "accuracy", "roc_auc", "precision")
+score_fun_list = ("f1", "accuracy", "roc_auc", "precision", "f1_micro",
+                  "f1_macro", "f1_weighted", "precision_micro",
+                  "precision_macro", "precision_weighted", "recall",
+                  "recall_micro", "recall_macro", "recall_weighted")
 
 
 def validate_config_file(config):

@@ -113,7 +113,7 @@ def experiment(config, verbose=1):
     counter_list = (Counter(all_selected_features)).most_common()
     counter_dict = dict(counter_list)
     path_to_features_freq_file = Path(
-        path, "features_freq" + str(time.strftime("%Y%m%d-%H%M%S")),
+        path, "features_freq_" + str(time.strftime("%Y%m%d-%H%M%S")),
     ).with_suffix(".csv")
     with open(path_to_features_freq_file, "w") as f:
         for key in counter_dict.keys():
