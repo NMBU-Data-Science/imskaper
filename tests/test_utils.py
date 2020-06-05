@@ -1,8 +1,10 @@
+import json
+import os
+
 import pytest
+
 from utils.classifiers import get_classifiers
 from utils.features_selectors import get_features_selectors
-import os
-import json
 
 path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "test_config.json"

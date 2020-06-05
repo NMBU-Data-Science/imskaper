@@ -11,25 +11,23 @@ __author__ = "Ahmed Albuni"
 __email__ = "ahmed.albuni@gmail.com"
 
 
+import datetime
+import logging
+import os
 import time
+from collections import Counter
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy
 import pandas as pd
 import seaborn as sns
-import numpy
 from pandas import DataFrame
-
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from collections import Counter
 
 from experiment.model_comparison import model_comparison_experiment
-from utils import features_selectors
-from utils import classifiers
-import logging
-import datetime
-import os
+from utils import classifiers, features_selectors
 
 
 def experiment(config, verbose=1):

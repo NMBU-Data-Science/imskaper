@@ -11,15 +11,15 @@ __author__ = "Ahmed Albuni"
 __email__ = "ahmed.albuni@gmail.com"
 
 
+from scipy.stats import randint as sp_randint
 from scipy.stats import uniform as sp_uniform
+from skfeature.function.similarity_based.fisher_score import fisher_score
 from sklearn.feature_selection import (
-    mutual_info_classif,
     GenericUnivariateSelect,
     VarianceThreshold,
+    mutual_info_classif,
 )
 from skrebate import ReliefF
-from scipy.stats import randint as sp_randint
-from skfeature.function.similarity_based.fisher_score import fisher_score
 
 
 def get_features_selectors(config):

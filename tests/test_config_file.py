@@ -1,8 +1,10 @@
-import pytest
 import json
-import validations.validate_config as validate
 import os.path
+
+import pytest
 from jsonschema.exceptions import ValidationError
+
+import validations.validate_config as validate
 
 path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "test_config.json"

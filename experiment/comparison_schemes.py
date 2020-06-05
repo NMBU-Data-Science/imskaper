@@ -14,9 +14,9 @@ __email__ = "ahmed.albuni@gmail.com"
 
 
 import os
-from multiprocessing import cpu_count
 from collections import OrderedDict
 from datetime import datetime
+from multiprocessing import cpu_count
 
 import numpy as np
 from pandas import DataFrame

@@ -1,9 +1,10 @@
+import json
+import os
+import shutil
+
+from experiment.experiment import experiment, read_Xy_data
 from utils.classifiers import get_classifiers
 from utils.features_selectors import get_features_selectors
-from experiment.experiment import experiment, read_Xy_data
-import os
-import json
-import shutil
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.join(current_path, "test_config.json")

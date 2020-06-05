@@ -13,11 +13,10 @@ __email__ = "ahmed.albuni@gmail.com"
 
 from lightgbm.sklearn import LGBMClassifier
 from scipy.stats import randint as sp_randint
-
 from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.linear_model import RidgeClassifier, LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 
 def get_classifiers(config):
