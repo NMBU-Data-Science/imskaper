@@ -120,34 +120,24 @@ def nested_cross_validation(
                 columns_names,
                 features.n_features_to_select,
             )
-            extras = "feature_importance: " + append_feature_name(
+            extras = "feature_importance: " + ", ".join(append_feature_name(
                 features.feature_importances_, columns_names
-            )
+            ))
         else:
-            if selector == "fisher_score":
-                selected_features = get_feature_names(
-                    features.get_support(), columns_names
-                )
-            else:
-                selected_features = get_feature_names(
-                    features.get_support(), columns_names
-                )
-
+            selected_features = get_feature_names(
+                features.get_support(), columns_names
+            )
             if selector == "VarianceThreshold":
-                extras = "feature_variances: " + append_feature_name(
+                extras = "feature_variances: " + ", ".join(append_feature_name(
                     features.variances_, columns_names
-                )
+                ))
             elif selector == "fisher_score":
                 pass
-                # print(features.get_support())
-                # print(features.scores_)
-                # print(features.pvalues_)
-                # extras = "features (sorted): " + get_sorted_features(
-                #     features.scores_, columns_names)
+                # the fisher score used doesn't provide the scores
             else:
-                extras = "feature_scores: " + append_feature_name(
+                extras = "feature_scores: " + ", ".join(append_feature_name(
                     features.scores_, columns_names
-                )
+                ))
     # Record training and validation performance of the selected model.
     test_scores = optimizer.best_score_
 
@@ -177,8 +167,8 @@ def nested_cross_validation(
                         ]
                     ),
                 ),
-                ("selected features ", selected_features.replace("\n", ""),),
-                ("features scores/importance ", extras.replace("\n", ""),),
+                ("selected features ", ", ".join(selected_features),),
+                ("features scores/importance ", extras,),
             ]
         )
     )
@@ -196,7 +186,7 @@ def nested_cross_validation(
             output["exp_duration"] = "{} days {:02d}:{:02d}:{:02d}".format(
                 days, hours, minutes, seconds
             )
-    return output, df, selected_features.split(", ")
+    return output, df, selected_features
 
 
 def get_feature_names(selector_array, features_list):
@@ -204,7 +194,7 @@ def get_feature_names(selector_array, features_list):
     for i, val in enumerate(selector_array):
         if val:
             selected_features.append(features_list[i])
-    return ", ".join(selected_features)
+    return selected_features#", ".join(selected_features)
 
 
 def get_selected_features_relieff(selector_array, features_list, num):
@@ -213,11 +203,11 @@ def get_selected_features_relieff(selector_array, features_list, num):
         if i < num:
             selected_features.append(features_list[val])
 
-    return ", ".join(selected_features)
+    return selected_features# ", ".join(selected_features)
 
 
 def append_feature_name(score_array, features_list):
     new_list = []
     for i, val in enumerate(score_array):
         new_list.append(features_list[i] + ":" + str(val))
-    return ", ".join(new_list)
+    return new_list #", ".join(new_list)
