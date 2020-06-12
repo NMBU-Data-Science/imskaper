@@ -25,7 +25,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from utils import ioutil
 
 
-def nested_cross_validation(
+def cross_validation(
     X: np.ndarray,
     y: np.ndarray,
     columns_names: list,
@@ -43,7 +43,7 @@ def nested_cross_validation(
     n_jobs: int = 1,
 ):
     """
-    Nested cross-validtion model comparison.
+    A cross-validtion model comparison.
 
     Args:
         X: Feature matrix (n samples x n features).

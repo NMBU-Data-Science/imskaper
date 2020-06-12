@@ -17,7 +17,7 @@ import numpy as np
 from pandas import DataFrame
 from tqdm import tqdm
 
-from experiment.comparison_schemes import nested_cross_validation
+from experiment.comparison_schemes import cross_validation
 from utils import ioutil
 
 
@@ -67,7 +67,7 @@ def model_comparison_experiment(
 
         # Get hyper-parameters for this model.
         model_hparams = hparams[model_name]
-        result, df, selected_features = nested_cross_validation(
+        result, df, selected_features = cross_validation(
             X=X,
             y=y,
             columns_names=columns_names,
