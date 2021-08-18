@@ -1,3 +1,2 @@
-image_dir,mask_dir,output_file_name,bin_width,shape,first_order,glszm,glrlm,ngtdm,gldm,glcm
-C:\tmp\250\,,i_250_2,25,,1,1,1,,1,1
-C:\tmp\500\,,i_500_2,25,1,1,1,1,,1,1
+image_dir,mask_dir,output_file_name,bin_width,shape,first_order,glszm,glrlm,ngtdm,gldm,glcm,LBP
+,,,,,,,,,,,1

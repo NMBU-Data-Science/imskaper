@@ -10,6 +10,7 @@ Features extraction script.
 __author__ = "Ahmed Albuni"
 __email__ = "ahmed.albuni@gmail.com"
 
+from LBP3d import LBPFeature
 
 import argparse
 import logging
@@ -66,6 +67,7 @@ FEATURES_LIST = (
     "ngtdm",
     "gldm",
     "glcm",
+    "LBP"
 )
 
 
@@ -99,7 +101,7 @@ def extract_radiomics_features(
     dependent on center voxel with gray level i if |i−j|≤α
     :param output_file_name: Name of the output csv file
     :return:
-    """
+        """
     if glcm_distance is None:
         glcm_distance = [1]
     if ngtdm_distance is None:
@@ -123,12 +125,13 @@ def extract_radiomics_features(
         #  If the mask is not available we create a dummy mask here that
         #  covers the whole image
         if masks_path is None:
-            mask = np.zeros((sitk.GetArrayFromImage(image)).shape, int) + 1
+            mask = np.zeros((image.get_fdata()).shape, int) + 1
             mask = sitk.GetImageFromArray(mask)
 
         else:
             mask_name = masks_path + img
             mask = sitk.ReadImage(mask_name, sitk.sitkUInt8)
+
             # Shape features applied only when the mask is provided
             if "shape" in features_list:
                 if len((sitk.GetArrayFromImage(image)).shape) == 2:
@@ -187,6 +190,15 @@ def extract_radiomics_features(
                         glcm_f, "glcm", additional_param="_d_" + str(d)
                     )
                 )
+        if "LBP" in features_list:              
+                lbp_f=LBPFeature(image_name=image_name ,mask_name=mask_name).feature_vector()
+
+                row.update(
+                    get_selected_features(
+                        lbp_f,"LBP"
+                    )
+                )
+        
         if i == 0:
             create_output_file(output_file_name + ".csv", row.keys())
         add_row_of_data(output_file_name + ".csv", row.keys(), row)
@@ -205,13 +217,19 @@ def add_row_of_data(file_name, columns, row):
 
 
 def get_selected_features(selected_feature, category, additional_param=None):
-    selected_feature.execute()
+    
     data = {}
-    for (key, val) in six.iteritems(selected_feature.featureValues):
-        key = category + "_" + key
-        if additional_param is not None:
-            key = key + additional_param
-        data[key] = val
+    if category=="LBP":
+        for (key, val) in six.iteritems(selected_feature):
+            key = category + "_" + str(key)
+            data[key] = val
+    else:
+        selected_feature.execute()
+        for (key, val) in six.iteritems(selected_feature.featureValues):
+            key = category + "_" + key
+            if additional_param is not None:
+                key = key + additional_param
+            data[key] = val
 
     return data
 
