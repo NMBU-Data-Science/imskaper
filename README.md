@@ -1,13 +1,13 @@
-# Biorad
+# imskaper
 
 This project consists of two separate tools, one for radiomics feature
  extractions, and the second tool is for running experiments with different
-  feature selection algorithms with various classifiers.  
+  feature selection algorithms with various classifiers.
 
 1. [ Getting Started ](#getting-started)
 
     1.1. [ Prerequisites ](#prerequisites)
-    
+
     1.2. [ Installation ](#installing)
 2. [ Features Extraction ](#features-extraction)
 3. [ Features selection and classifications ](#features-selection-and-classifications)
@@ -28,7 +28,7 @@ Download or clone the code to your local machine and follow the instructions
 ### Installing
 
 
-- Open Anaconda prompt on windows or the command line in MacOS, navigate to the directory (inside the biorad folder) where you placed the code on your local machine, and type the following command to install the project requirements:
+- Open Anaconda prompt on windows or the command line in MacOS, navigate to the directory (inside the imskaper folder) where you placed the code on your local machine, and type the following command to install the project requirements:
 
 **pip install -r requirements.txt**
 
@@ -41,7 +41,7 @@ After installing the project requirements, you should be able to run both the cl
 
 For features extraction, use the command prompt and navigate to the following folder:
 
-biorad\features\_extraction
+imskaper\features\_extraction
 
 modify the template.csv file
 
@@ -70,7 +70,7 @@ This tool tests random combinations of hyperparameters specified in a json file,
 
 To run the tool, you will need to provide the dataset in a csv file, where the response variable is the last field, currently this tool can be used for binary classifications only, all data should be numerical, with no missing information.
 
-Also, you will need a json file with the configurations, config.json under biorad directory is a sample file, you can modify it to select the range of selected features, regularization parameters ranges, etc.
+Also, you will need a json file with the configurations, config.json under imskaper directory is a sample file, you can modify it to select the range of selected features, regularization parameters ranges, etc.
 
 To modify a json file you can use any text editor, you can do that by right click on the file, open with, then select notepad
 
@@ -82,7 +82,7 @@ In the json file you will need to modify the path of the dataset file as follow:
 
 Also, you will need to update the output directory, where the results are stored.
 
-- In command prompt navigate to the biorad directory
+- In command prompt navigate to the imskaper directory
 - Run the following command:
 **python main.py -file config.json**
 
@@ -94,7 +94,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-* Original author of the previous version of the Biorad project: Severin
+* Original author of the previous version of the Biorad project (old name): Severin
  Langberg
 * Project supervisor: Cecilia Marie Futsæther
-

@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="biorad-pkg-AHMED-ALBUNI",
+    name="imskaper",
     version="0.0.1",
     author="Ahmed Albuni",
     author_email="ahmed.albuni@gmail.com",
     description="Radiomics features extractions and analysis tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/ahmedalbuni/biorad",
+    url="https://github.com/NMBU-Data-Science/imskaper",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
