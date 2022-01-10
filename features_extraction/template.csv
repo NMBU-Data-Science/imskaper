@@ -1,3 +1,3 @@
-image_dir,mask_dir,output_file_name,bin_width,shape,first_order,glszm,glrlm,ngtdm,gldm,glcm
-C:\tmp\250\,,i_250_2,25,,1,1,1,,1,1
-C:\tmp\500\,,i_500_2,25,1,1,1,1,,1,1
+image_dir,mask_dir,output_file_name,bin_width,shape,first_order,glszm,glrlm,ngtdm,gldm,glcm,LBP
+\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\ct\,\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\mask\,train,25,,1,1,1,,1,1,1
+\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\pet\,\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\mask\,test,25,1,1,1,1,,1,1,1
