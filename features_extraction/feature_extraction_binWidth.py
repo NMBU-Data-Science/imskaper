@@ -73,7 +73,7 @@ FEATURES_LIST = (
 
 def extract_radiomics_features(
     features_list,
-    bin_count,
+    bin_width,
     images_path,
     masks_path=None,
     glcm_distance=None,
@@ -84,7 +84,7 @@ def extract_radiomics_features(
 ):
     """
     :param features_list: list of features to be extracted
-    :param bin_count:
+    :param bin_width:
     :param images_path: The path that contains the images
     :param masks_path: The path of the masks, masks name should match the
     images names
@@ -135,30 +135,30 @@ def extract_radiomics_features(
             if "shape" in features_list:
                 if len((sitk.GetArrayFromImage(image)).shape) == 2:
                     shape_2d_f = shape2D.RadiomicsShape2D(
-                        image, mask, binCount=bin_count
+                        image, mask, binWidth=bin_width
                     )
                     row.update(get_selected_features(shape_2d_f, "shape_2d"))
                 else:
                     shape_f = shape.RadiomicsShape(
-                        image, mask, binCount=bin_count
+                        image, mask, binWidth=bin_width
                     )
                     row.update(get_selected_features(shape_f, "shape"))
 
         if "first_order" in features_list:
             f_o_f = firstorder.RadiomicsFirstOrder(
-                image, mask, binCount=bin_count
+                image, mask, binWidth=bin_width
             )
             row.update(get_selected_features(f_o_f, "first_order"))
         if "glszm" in features_list:
-            glszm_f = glszm.RadiomicsGLSZM(image, mask, binCount=bin_count)
+            glszm_f = glszm.RadiomicsGLSZM(image, mask, binWidth=bin_width)
             row.update(get_selected_features(glszm_f, "glszm"))
         if "glrlm" in features_list:
-            glrlm_f = glrlm.RadiomicsGLRLM(image, mask, binCount=bin_count)
+            glrlm_f = glrlm.RadiomicsGLRLM(image, mask, binWidth=bin_width)
             row.update(get_selected_features(glrlm_f, "glrlm"))
         if "ngtdm" in features_list:
             for d in ngtdm_distance:
                 ngtdm_f = ngtdm.RadiomicsNGTDM(
-                    image, mask, distances=[d], binCount=bin_count
+                    image, mask, distances=[d], binWidth=bin_width
                 )
                 row.update(
                     get_selected_features(
@@ -172,7 +172,7 @@ def extract_radiomics_features(
                     mask,
                     distances=[d],
                     gldm_a=gldm_a,
-                    binCount=bin_count,
+                    binWidth=bin_width,
                 )
                 row.update(
                     get_selected_features(
@@ -182,7 +182,7 @@ def extract_radiomics_features(
         if "glcm" in features_list:
             for d in glcm_distance:
                 glcm_f = glcm.RadiomicsGLCM(
-                    image, mask, distances=[d], binCount=bin_count
+                    image, mask, distances=[d], binWidth=bin_width
                 )
                 row.update(
                     get_selected_features(
@@ -190,7 +190,8 @@ def extract_radiomics_features(
                     )
                 )
         if "LBP" in features_list:
-            lbp_f = LBPFeature(image_name=sitk.GetArrayFromImage(image), mask_name=sitk.GetArrayFromImage(mask)).feature_vector()
+            # lbp_f = LBPFeature(image_name=sitk.GetArrayFromImage(image), mask_name=sitk.GetArrayFromImage(mask)).feature_vector()
+            lbp_f = LBPFeature(image_name=image_name, mask_name=mask_name).feature_vector()
             row.update(
                 get_selected_features(
                     lbp_f,"LBP"
@@ -264,7 +265,7 @@ if __name__ == "__main__":
             mask_path = row["mask_dir"]
         extract_radiomics_features(
             feature,
-            row["bin_count"],
+            row["bin_width"],
             row["image_dir"],
             mask_path,
             output_file_name=row["output_file_name"],
