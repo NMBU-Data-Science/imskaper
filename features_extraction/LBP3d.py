@@ -74,7 +74,7 @@ class LBPFeature():
         # we need permutation of three numbers -1, 0, 1 to make shift vectors.
         x = [-1,1,0]
         y = [-1,1,0]
-        z=[-1,1,0]
+        z = [-1,1,0]
         x = pd.DataFrame(data={'x': x}, index=np.repeat(0, len(x)))
         y = pd.DataFrame({'y': y}, index=np.repeat(0, len(y)))
         z = pd.DataFrame({'z': z}, index=np.repeat(0, len(z)))
@@ -92,9 +92,9 @@ class LBPFeature():
         # we made earlier.
         shift_list = []
         for i in range(len(shift_vec)):
-           dx= shift_vec.iloc[i]['x']
-           dy=shift_vec.iloc[i]['y']
-           dz=shift_vec.iloc[i]['z']
+           dx = shift_vec.iloc[i]['x']
+           dy = shift_vec.iloc[i]['y']
+           dz = shift_vec.iloc[i]['z']
            shift_list.append(self.shift(dx,dy,dz))
 
         # Calculating LBP for each cell
@@ -140,7 +140,7 @@ class LBPFeature():
 
         # make the feature vector
         freq_total = sum(frequency.values())
-        lbp_feature_vect_dict ={}
+        lbp_feature_vect_dict = {i:0 for i in np.unique(self.pattern['rotation_invariant'].values)}
         for (label, val) in six.iteritems(frequency):
             if np.where((self.pattern['original'] == label).values==True):
                 key=self.pattern.loc[self.pattern['original']==
