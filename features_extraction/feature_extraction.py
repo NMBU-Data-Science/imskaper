@@ -81,6 +81,8 @@ def extract_radiomics_features(
     gldm_distance=None,
     gldm_a=0,
     output_file_name="output",
+    label=1,
+    bin_setting_name='binCount'
 ):
     """
     :param features_list: list of features to be extracted
@@ -113,6 +115,10 @@ def extract_radiomics_features(
         f for f in listdir(images_path) if isfile(join(images_path, f))
     ]
 
+    bin_settings = {
+        bin_setting_name: bin_count
+    }
+
     for i, img in tqdm(
         enumerate(list_of_images), total=len(list_of_images), unit="files"
     ):
@@ -131,34 +137,49 @@ def extract_radiomics_features(
         else:
             mask_name = masks_path + img
             mask = sitk.ReadImage(mask_name)
+            if type(label) == list:
+                # merge all labels
+                # label = 1
+                labels = label.copy()
+                label = 1
+
+                mask_data = sitk.GetArrayFromImage(mask)
+                for label_val in labels:
+                    mask_data[mask_data==label_val] = 1
+                # regenerate the sitk image obj (for voxel size, etc..)
+                new_mask = sitk.GetImageFromArray(mask_data)
+                new_mask.CopyInformation(mask)
+                mask = new_mask
+
+
             # Shape features applied only when the mask is provided
             if "shape" in features_list:
                 if len((sitk.GetArrayFromImage(image)).shape) == 2:
                     shape_2d_f = shape2D.RadiomicsShape2D(
-                        image, mask, binCount=bin_count
+                        image, mask, label=label, **bin_settings
                     )
                     row.update(get_selected_features(shape_2d_f, "shape_2d"))
                 else:
                     shape_f = shape.RadiomicsShape(
-                        image, mask, binCount=bin_count
+                        image, mask, label=label, **bin_settings
                     )
                     row.update(get_selected_features(shape_f, "shape"))
 
         if "first_order" in features_list:
             f_o_f = firstorder.RadiomicsFirstOrder(
-                image, mask, binCount=bin_count
+                image, mask, label=label, **bin_settings
             )
             row.update(get_selected_features(f_o_f, "first_order"))
         if "glszm" in features_list:
-            glszm_f = glszm.RadiomicsGLSZM(image, mask, binCount=bin_count)
+            glszm_f = glszm.RadiomicsGLSZM(image, mask, label=label, **bin_settings)
             row.update(get_selected_features(glszm_f, "glszm"))
         if "glrlm" in features_list:
-            glrlm_f = glrlm.RadiomicsGLRLM(image, mask, binCount=bin_count)
+            glrlm_f = glrlm.RadiomicsGLRLM(image, mask, label=label, **bin_settings)
             row.update(get_selected_features(glrlm_f, "glrlm"))
         if "ngtdm" in features_list:
             for d in ngtdm_distance:
                 ngtdm_f = ngtdm.RadiomicsNGTDM(
-                    image, mask, distances=[d], binCount=bin_count
+                    image, mask, distances=[d], label=label, **bin_settings
                 )
                 row.update(
                     get_selected_features(
@@ -172,7 +193,8 @@ def extract_radiomics_features(
                     mask,
                     distances=[d],
                     gldm_a=gldm_a,
-                    binCount=bin_count,
+                    label=label,
+                    **bin_settings
                 )
                 row.update(
                     get_selected_features(
@@ -182,7 +204,7 @@ def extract_radiomics_features(
         if "glcm" in features_list:
             for d in glcm_distance:
                 glcm_f = glcm.RadiomicsGLCM(
-                    image, mask, distances=[d], binCount=bin_count
+                    image, mask, distances=[d], label=label, **bin_settings
                 )
                 row.update(
                     get_selected_features(
@@ -190,7 +212,7 @@ def extract_radiomics_features(
                     )
                 )
         if "LBP" in features_list:
-            lbp_f = LBPFeature(image_name=sitk.GetArrayFromImage(image), mask_name=sitk.GetArrayFromImage(mask)).feature_vector()
+            lbp_f = LBPFeature(image_name=sitk.GetArrayFromImage(image), mask_name=sitk.GetArrayFromImage(mask), label=label).feature_vector()
             row.update(
                 get_selected_features(
                     lbp_f,"LBP"
@@ -262,9 +284,24 @@ if __name__ == "__main__":
             mask_path = None
         else:
             mask_path = row["mask_dir"]
+
+        label = row.get('label', 1)
+        if type(label) is not int:
+            try:
+                label = int(label)
+            except:
+                label = list(map(int, label.split(',')))
+
+        if row.get('bin_count') is None or np.isnan(row.get('bin_count')):
+            bin_setting = 'bin_width'
+            bin_setting_name = 'binWidth'
+        else:
+            bin_setting = 'bin_count'
+            bin_setting_name = 'binCount'
+
         extract_radiomics_features(
             feature,
-            row["bin_count"],
+            row[bin_setting],
             row["image_dir"],
             mask_path,
             output_file_name=row["output_file_name"],
@@ -272,4 +309,6 @@ if __name__ == "__main__":
             ngtdm_distance=ngtdm_d,
             gldm_distance=gldm_d,
             gldm_a=gldm_a,
+            label=label,
+            bin_setting_name=bin_setting_name
         )

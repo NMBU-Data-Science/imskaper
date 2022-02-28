@@ -53,6 +53,12 @@ class LBPFeature():
        # self.mask_name=mask_name
         self.image = image
         self.mask = mask
+
+        if '__iter__' in dir(label):
+            for label_val in label:
+                self.mask[mask == label_val] = 1
+            label = 1
+
         self.label = label
         n, m, k = self.image.shape
         self.n = n
