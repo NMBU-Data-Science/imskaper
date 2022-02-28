@@ -14,6 +14,7 @@ __email__ = "ahmed.albuni@gmail.com, ngoc.huynh.bao@nmbu.no"
 import argparse
 import logging
 from csv import DictWriter
+from msilib.schema import Error
 from os import listdir
 from os.path import isfile, join
 
@@ -32,30 +33,8 @@ from radiomics import (
     shape2D,
 )
 from tqdm import tqdm
-from LBP3d import LBPFeature
-
-parser = argparse.ArgumentParser(description="Features extraction")
-parser.add_argument(
-    "-file", type=str, help="CSV parameters file name and " "path"
-)
-parser.add_argument(
-    "-glcm_distance",
-    type=str,
-    help="list of distances, " "comma separated. " "default: 1",
-)
-parser.add_argument(
-    "-ngtdm_distance",
-    type=str,
-    help="list of distances, " "comma separated. " "default 1",
-)
-parser.add_argument(
-    "-gldm_distance",
-    type=str,
-    help="list of distances, " "comma separated. " "default 1",
-)
-parser.add_argument(
-    "-gldm_a", type=int, help="Cutoff value for dependence, " "default: 0"
-)
+import click
+from .LBP3d import LBPFeature
 
 #  List of features groups available in pyradiomics package
 #  This list match the input csv parameters file
@@ -253,9 +232,31 @@ def get_selected_features(selected_feature, category, additional_param=None):
     return data
 
 
-if __name__ == "__main__":
-
+def imskaper_feature_extract():
     logging.disable(logging.CRITICAL)
+
+    parser = argparse.ArgumentParser(description="Features extraction")
+    parser.add_argument(
+        "-file", type=str, help="CSV parameters file name and " "path"
+    )
+    parser.add_argument(
+        "-glcm_distance",
+        type=str,
+        help="list of distances, " "comma separated. " "default: 1",
+    )
+    parser.add_argument(
+        "-ngtdm_distance",
+        type=str,
+        help="list of distances, " "comma separated. " "default 1",
+    )
+    parser.add_argument(
+        "-gldm_distance",
+        type=str,
+        help="list of distances, " "comma separated. " "default 1",
+    )
+    parser.add_argument(
+        "-gldm_a", type=int, help="Cutoff value for dependence, " "default: 0"
+    )
 
     args = parser.parse_args()
     glcm_d = args.glcm_distance
@@ -271,6 +272,11 @@ if __name__ == "__main__":
     gldm_a = args.gldm_a
     if gldm_a is None:
         gldm_a = 0
+
+    if not args.file:
+        print('A path to the template file must be specified using the -file argument.')
+        print('imskaper_feature_extraction -file <path_to_csv_template>')
+        return
 
     f_list = pd.read_csv(args.file)
 
@@ -312,3 +318,6 @@ if __name__ == "__main__":
             label=label,
             bin_setting_name=bin_setting_name
         )
+
+if __name__ == "__main__":
+    imskaper_feature_extract()
