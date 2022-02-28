@@ -1,3 +1,0 @@
-image_dir,mask_dir,output_file_name,bin_count,shape,first_order,glszm,glrlm,ngtdm,gldm,glcm,LBP
-\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\pet\,\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\mask\,PET_4,4,1,1,1,1,,1,1,1
-\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\pet\,\\nmbu.no\LargeFile\Project\REALTEK-HeadNeck-Project\Head-and-Neck\Masterstudents\Sofie\image_data\ous\tumor_ds\mask\,PET_8,8,1,1,1,1,,1,1,1

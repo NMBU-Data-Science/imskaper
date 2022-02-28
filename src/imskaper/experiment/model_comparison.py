@@ -17,8 +17,8 @@ import numpy as np
 from pandas import DataFrame
 from tqdm import tqdm
 
-from experiment.comparison_schemes import cross_validation
-from utils import ioutil
+from .comparison_schemes import cross_validation
+from ..utils import ioutil
 
 
 def model_comparison_experiment(

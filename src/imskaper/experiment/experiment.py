@@ -26,8 +26,8 @@ from pandas import DataFrame
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from experiment.model_comparison import model_comparison_experiment
-from utils import classifiers, features_selectors
+from .model_comparison import model_comparison_experiment
+from ..utils import classifiers, features_selectors
 
 
 def experiment(config, verbose=1):

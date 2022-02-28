@@ -16,10 +16,14 @@ import os.path
 
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+import pkg_resources
 
-path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.json")
-with open(path) as config_file:
-    schema = json.load(config_file)
+
+# path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.json")
+# with open(pkg_resources.resource_filename(__name__, 'schema.json')) as config_file:
+#     schema = json.load(config_file)
+
+schema = json.loads(pkg_resources.resource_string(__name__, 'schema.json'))
 score_fun_list = (
     "f1",
     "accuracy",

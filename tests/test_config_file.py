@@ -4,10 +4,12 @@ import os.path
 import pytest
 from jsonschema.exceptions import ValidationError
 
-import validations.validate_config as validate
+
+from imskaper.validations import validate_config as validate
+# import validations.validate_config as validate
 
 path = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "test_config.json"
+    "tests", "test_config.json"
 )
 with open(path) as config_file:
     config = json.load(config_file)

@@ -10,6 +10,7 @@ import pandas as pd
 import six
 from collections import Counter
 import nibabel as nib
+import pkg_resources
 
 
 class LBPFeature():
@@ -65,7 +66,7 @@ class LBPFeature():
         self.m = m
         self.k = k
         # read the pattern  file which is based on rotation invariant concept.
-        self.pattern = pd.read_csv('rotation_invariant_pattern.txt', sep="\t",
+        self.pattern = pd.read_csv(pkg_resources.resource_stream(__name__, 'rotation_invariant_pattern.txt'), sep="\t",
                                    converters={'rotation_invariant': lambda x: str(x)})
 
     def shift(self, dx, dy, dz):

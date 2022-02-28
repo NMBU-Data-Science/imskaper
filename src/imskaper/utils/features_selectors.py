@@ -65,14 +65,14 @@ def get_features_selectors(config):
     f_list["mutual_info"] = (
         (
             mutual_info_classif.__name__,
-            GenericUnivariateSelect(mutual_info_classif, "k_best"),
+            GenericUnivariateSelect(mutual_info_classif, mode="k_best"),
         ),
         mutual_info_param,
     )
     f_list["fisher_score"] = (
         (
             fisher_score.__name__,
-            GenericUnivariateSelect(fisher_score, "k_best"),
+            GenericUnivariateSelect(fisher_score, mode="k_best"),
         ),
         fisher_param,
     )

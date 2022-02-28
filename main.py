@@ -14,8 +14,8 @@ __email__ = "ahmed.albuni@gmail.com"
 import argparse
 import json
 
-import experiment.experiment as ex
-import validations.validate_config as validate
+import imskaper.experiment.experiment as ex
+import imskaper.validations.validate_config as validate
 
 parser = argparse.ArgumentParser(
     description="Features selection and " "classifications (2 classes)"

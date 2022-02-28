@@ -2,11 +2,11 @@ import json
 import os
 import shutil
 
-from experiment.experiment import experiment, read_Xy_data
-from utils.classifiers import get_classifiers
-from utils.features_selectors import get_features_selectors
+from imskaper.experiment.experiment import experiment, read_Xy_data
+from imskaper.utils.classifiers import get_classifiers
+from imskaper.utils.features_selectors import get_features_selectors
 
-current_path = os.path.dirname(os.path.abspath(__file__))
+current_path = "tests" # os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.join(current_path, "test_config.json")
 with open(json_path) as config_file:
     config = json.load(config_file)
@@ -35,7 +35,7 @@ def test_exp():
         len(get_features_selectors(config)),
     )
     folder_name = [os.path.join(p, f) for f in os.listdir(p)]
-    assert len([f for f in os.listdir(folder_name[0])]) == 8
+    assert len([f for f in os.listdir(folder_name[0]) if f.endswith('.csv') or f.endswith('.jpg')]) == 8
     df2 = experiment(config, verbose=0)
     # Make sure we are able to reproduce the results when using the same seed
     assert df.equals(df2)
