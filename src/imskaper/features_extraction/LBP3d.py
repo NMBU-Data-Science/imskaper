@@ -112,7 +112,7 @@ class LBPFeature():
         for x_center in range(self.n):
             for y_center in range(self.m):
                 for z_center in range(self.k):
-                    # only calculating LBP for the mask region has value 1
+                    # only calculating LBP for the mask region has value 1 (self.label)
                     if self.mask[x_center, y_center, z_center] == self.label:
                         decimal_center = 0
                         for j in range(len(shift_list)):

@@ -14,7 +14,6 @@ __email__ = "ahmed.albuni@gmail.com, ngoc.huynh.bao@nmbu.no"
 import argparse
 import logging
 from csv import DictWriter
-from msilib.schema import Error
 from os import listdir
 from os.path import isfile, join
 
